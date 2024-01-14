@@ -2,5 +2,11 @@
 using System.Text;
 
 Console.WriteLine("Heasdasdallo, World!");
-File.WriteAllText("testasdasd1.txt", "Hello, World!");
-File.WriteAllText("test2.txt", "Hello, World!",Encoding.ASCII);
+string nameFile = "test.txt";
+if(File.Exists(nameFile))
+{
+    File.Delete(nameFile);
+}
+
+File.WriteAllText(nameFile, "Hello, World!");
+File.WriteAllText(nameFile, "Hello, World!",Encoding.ASCII);

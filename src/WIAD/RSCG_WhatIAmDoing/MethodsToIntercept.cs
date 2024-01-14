@@ -11,6 +11,16 @@ class MethodsToIntercept
                 ClassName = "System.IO.File", 
                 MethodName = "WriteAllText",
                 IsStatic = true
+            },
+            new MethodToIntercept {
+                ClassName = "System.IO.File",
+                MethodName = "Exists",
+                IsStatic = true
+            },
+            new MethodToIntercept {
+                ClassName = "System.IO.File",
+                MethodName = "Delete",
+                IsStatic = true
             }
         };   
         Methods = methodToIntercepts

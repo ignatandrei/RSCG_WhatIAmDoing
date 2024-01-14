@@ -64,6 +64,22 @@ public class GeneratorWIAD : IIncrementalGenerator
             typeAndMethod = new TypeAndMethod(staticMember ?? "", typeReturn?.ToString() ?? "");
             var nameMethod = typeAndMethod.MethodName;
             string fullCall = op.Syntax.ToFullString();
+            bool replaceEmptyLines = true;
+            while (replaceEmptyLines)
+            {
+                replaceEmptyLines= false;
+                if (fullCall.StartsWith("\r"))
+                {
+                    replaceEmptyLines = true;
+                    fullCall = fullCall.Substring(1);
+                }
+                if (fullCall.StartsWith("\n"))
+                {
+                    replaceEmptyLines = true;
+                    fullCall = fullCall.Substring(1);
+                }
+            }
+            fullCall= fullCall.Trim();
             justMethod = fullCall.IndexOf("(");
             if (justMethod != null && justMethod > 0)
             {
@@ -200,7 +216,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
             spc.ReportDiagnostic(d);
             //write default?            
-            spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", ser.Value.DataToBeWriten);
+            //spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", ser.Value.DataToBeWriten);
             continue;
 
 

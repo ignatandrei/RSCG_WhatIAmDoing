@@ -26,18 +26,27 @@ public static {{(ser.item.HasTaskReturnType?"async":"")}} {{ser.item.TypeReturn}
     {{
         if ser.item.NrArguments > 0 
     }}
-			Console.WriteLine("I am starting to {{ser.item.MethodName}} to file " + {{ser.item.Arguments[0].Name}});
+			Console.WriteLine("I verify if file " + {{ser.item.Arguments[0].Name}} +" {{ser.item.MethodName}}  ");
 	{{
         end 
     }}
     
-    {{ser.item.ReturnString}} {{(ser.item.HasTaskReturnType ? "await" : "")}} {{ser.item.CallMethod}};
+    var data= {{(ser.item.HasTaskReturnType ? "await" : "")}} {{ser.item.CallMethod}};
+    {{
+        if ser.item.NrArguments > 0 
+    }}
+			Console.WriteLine("file {{ser.item.MethodName}} " + {{ser.item.Arguments[0].Name}} +":" + data );
+	{{
+        end 
+    }}
+    
+    return data;
     }
     finally{
         {{
         if ser.item.NrArguments > 0 
     }}
-			Console.WriteLine("finish {{ser.item.MethodName}} to file " + {{ser.item.Arguments[0].Name}});
+			Console.WriteLine("finish verify file exists " + {{ser.item.Arguments[0].Name}});
 	{{
         end 
     }}

@@ -8,10 +8,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Interceptors\System.IO.File.Delete.txt" />
+	  <None Remove="Interceptors\System.IO.File.Exists.txt" />
 	  <None Remove="Interceptors\System.IO.File.WriteAllText.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AdditionalFiles Include="Interceptors\System.IO.File.Delete.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </AdditionalFiles>
+	  <AdditionalFiles Include="Interceptors\System.IO.File.Exists.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </AdditionalFiles>
 	  <AdditionalFiles Include="Interceptors\System.IO.File.WriteAllText.txt">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </AdditionalFiles>
