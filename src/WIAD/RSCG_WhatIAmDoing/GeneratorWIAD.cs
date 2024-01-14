@@ -166,10 +166,28 @@ public class GeneratorWIAD : IIncrementalGenerator
             }
             if (fileText != null)
             {
-                var template = Template.Parse(fileText);
-                string fileContent = template.Render(new { ser = ser.Value, Version = "8.2023.2811.524" }, m => m.Name);
-                spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", fileContent);
+                Template? template=null;
+                try
+                {
+                    template = Template.Parse(fileText);
+                    string fileContent = template.Render(new { ser = ser.Value, Version = "8.2023.2811.524" }, m => m.Name);
+                    spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", fileContent);
+                }
+                catch( Exception)
+                {
+                    var m=template?.Messages?.FirstOrDefault();
+                    var msg = m?.ToString() ?? "";
+                    Diagnostic d1 = Diagnostic.Create(
+    new DiagnosticDescriptor("RSCG_InterceptorTemplate",
+    "RSCG_WIAD_002",
+    $"parsing template error method {name} " +msg, "RSCG_InterceptorTemplate",
+    DiagnosticSeverity.Error,
+    true),
+    Location.None);
 
+                    spc.ReportDiagnostic(d1);
+
+                }
                 continue;
             }
             Diagnostic d = Diagnostic.Create(

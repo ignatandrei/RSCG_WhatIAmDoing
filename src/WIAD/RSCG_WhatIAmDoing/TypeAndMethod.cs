@@ -135,4 +135,11 @@ public partial struct TypeAndMethod
     }
 
     public Argument[] Arguments { get; internal set; } = [];
+    public int NrArguments
+    {
+        get
+        {
+            return Arguments.Length;
+        }
+    }
 }
