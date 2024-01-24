@@ -185,8 +185,10 @@ public class GeneratorWIAD : IIncrementalGenerator
                 Template? template=null;
                 try
                 {
-                    template = Template.Parse(fileText);
-                    string fileContent = template.Render(new { ser = ser.Value, Version = "8.2023.2811.524" }, m => m.Name);
+                    //template = Template.Parse(fileText);
+                    //string fileContent = template.Render(new { ser = ser.Value, Version = "8.2023.2811.524" }, m => m.Name);
+                    RSCG_WhatIAmDoing.AOP v=new AOP(ser.Value);
+                    string fileContent = v.Render();
                     spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", fileContent);
                 }
                 catch( Exception)

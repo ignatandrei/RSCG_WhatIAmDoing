@@ -7,21 +7,21 @@ class MethodsToIntercept
     {
         List<MethodToIntercept> methodToIntercepts = new()
         {
-            new MethodToIntercept { 
-                ClassName = "System.IO.File", 
-                MethodName = "WriteAllText",
-                IsStatic = true
-            },
+            //new MethodToIntercept { 
+            //    ClassName = "System.IO.File", 
+            //    MethodName = "WriteAllText",
+            //    IsStatic = true
+            //},
             new MethodToIntercept {
                 ClassName = "System.IO.File",
                 MethodName = "Exists",
                 IsStatic = true
             },
-            new MethodToIntercept {
-                ClassName = "System.IO.File",
-                MethodName = "Delete",
-                IsStatic = true
-            }
+            //new MethodToIntercept {
+            //    ClassName = "System.IO.File",
+            //    MethodName = "Delete",
+            //    IsStatic = true
+            //}
         };   
         Methods = methodToIntercepts
             .Where(static m => m is not null)
