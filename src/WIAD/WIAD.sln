@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WIAD_DemoConsole", "WIAD_DemoConsole\WIAD_DemoConsole.csproj", "{CD4F5398-755C-4F54-BD36-6A2BDC8E8154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WIAD_DemoConsole", "WIAD_DemoConsole\WIAD_DemoConsole.csproj", "{CD4F5398-755C-4F54-BD36-6A2BDC8E8154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSCG_WhatIAmDoing", "RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj", "{2D03A71C-604F-43E8-8B13-9204B104080E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSCG_WhatIAmDoing", "RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj", "{2D03A71C-604F-43E8-8B13-9204B104080E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

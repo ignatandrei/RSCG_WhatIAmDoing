@@ -108,7 +108,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             arguments = invocation
             .Arguments
             .Where(it => it?.Parameter != null)
-            .Select(it => new Argument(it!.Parameter!.ToDisplayString()))
+            .Select(it => new Argument(it!.Parameter!))
             .ToArray();
         }
 

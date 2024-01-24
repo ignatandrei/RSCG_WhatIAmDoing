@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 	</ItemGroup>
 	<PropertyGroup>
 

@@ -5,11 +5,24 @@ class DataForSerializeFile
     public DataForSerializeFile(TypeAndMethod item)
     {
         this.item = item;
+
+        if (item.IsStatic) { 
+        this.itemStatic =
+            Newtonsoft.Json.JsonConvert.SerializeObject(new TypeAndMethodStatic(item))
+            ;
+
+
+        }
+
+    var x=    $$$""""
+    {"TypeOfClass":"{{{item}}}","MethodName":"Exists","ValueArguments":[],"StringArguments":[{"IsValueType":false,"TypeAndName":"string? path","TypeArgument":"String","Name":"path"}]}
+"""";
+
         Interlocked.Increment(ref count);
         nameFileToBeWritten = $"{item.TypeOfClass}_{item.MethodName}_{count}";
     }
     public TypeAndMethod item;
-
+    public string? itemStatic { get; set; }
     public int extraLength
     {
         get

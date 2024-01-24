@@ -21,8 +21,13 @@ static partial class SimpleIntercept
 //[System.Diagnostics.DebuggerStepThrough()]
 public static {{(ser.item.HasTaskReturnType?"async":"")}} {{ser.item.TypeReturn}} {{ser.item.MethodSignature}}({{ser.item.ThisArgument}} {{ser.item.ArgumentsForCallMethod}} )  
 {
-
-    try{
+    //andrei {{ser.itemStatic}}
+    
+var x=WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodBefore(
+$$$""""
+    {{ser.itemStatic}}
+""""); 
+	try{
     {{
         if ser.item.NrArguments > 0 
     }}

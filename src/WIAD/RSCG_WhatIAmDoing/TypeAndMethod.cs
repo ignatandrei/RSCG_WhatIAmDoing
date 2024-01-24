@@ -1,5 +1,5 @@
 ﻿namespace RSCG_WhatIAmDoing;
-public partial struct TypeAndMethod
+public class TypeAndMethod
 {
     public static TypeAndMethod InvalidEmpty = new TypeAndMethod("", "", "", "");
     public TypeAndMethod(string typeOfClass, string methodInvocation, string typeReturn, string nameOfVariable)
