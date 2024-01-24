@@ -22,29 +22,46 @@ static partial class SimpleIntercept
 public static {{(ser.item.HasTaskReturnType?"async":"")}} {{ser.item.TypeReturn}} {{ser.item.MethodSignature}}({{ser.item.ThisArgument}} {{ser.item.ArgumentsForCallMethod}} )  
 {
     //andrei {{ser.itemStatic}}
-    
+System.Collections.Generic.Dictionary<string,string?> valValues = new (){
+
+{{ for val in ser.item.ValueArguments }}
+   { "{{val.Name}}", {{val.Name}}?.ToString() } , 
+{{ end }}
+};//end valValues
+
+System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
+
+{{ for str in ser.item.StringArguments }}
+    { "{{str.Name}}", {{str.Name}}?.ToString() } ,
+{{ end }}
+};//end stringValues
+
 var x=WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodBefore(
 $$$""""
     {{ser.itemStatic}}
-""""); 
+""""
+,valValues , stringValues 
+)
+; 
 	try{
-    {{
+    /* {{
         if ser.item.NrArguments > 0 
     }}
 			Console.WriteLine("I verify if file " + {{ser.item.Arguments[0].Name}} +" {{ser.item.MethodName}}  ");
 	{{
         end 
     }}
-    
+    */
     var data= {{(ser.item.HasTaskReturnType ? "await" : "")}} {{ser.item.CallMethod}};
-    {{
+    /*{{
         if ser.item.NrArguments > 0 
     }}
 			Console.WriteLine("file {{ser.item.MethodName}} " + {{ser.item.Arguments[0].Name}} +":" + data );
 	{{
         end 
     }}
-    
+    */
+    WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfter(x,data); 
     return data;
     }
     finally{

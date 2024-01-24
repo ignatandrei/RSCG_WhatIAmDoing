@@ -112,7 +112,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             .ToArray();
         }
 
-        typeAndMethod.Arguments = arguments;
+        typeAndMethod.SetArguments (arguments);
 
         return new Tuple<TypeAndMethod, IOperation>(typeAndMethod, op );
 

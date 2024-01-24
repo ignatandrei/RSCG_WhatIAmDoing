@@ -33,6 +33,28 @@ public class TypeAndMethod
     public string TypeReturn { get; }
     public string NameOfVariable { get; set; }
 
+    public Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();
+    public Argument[] StringArguments { get; set; } = Array.Empty<Argument>();
+
+    private static Argument[] ValueArgs(TypeAndMethod source)
+    {
+        return source.Arguments.Where(it => it.IsValueType).ToArray();
+    }
+    const string typeofString = "String";
+    private static Argument[] StringArgs(TypeAndMethod source)
+    {
+        return source.Arguments
+            .Where(it => !it.IsValueType)
+            .Where(it =>
+                (it.TypeArgument != typeofString)
+                ||
+                (it.TypeArgument != typeofString + "?")
+                )
+            .ToArray();
+    }
+
+
+
     public bool IsStatic
     {
         get
@@ -133,8 +155,14 @@ public class TypeAndMethod
             return $"Intercept_{nameOfVariable}_{MethodName}";
         }
     }
-
-    public Argument[] Arguments { get; internal set; } = [];
+    public void SetArguments(Argument[] arguments)
+    {
+        Arguments = arguments;
+        ValueArguments = ValueArgs(this);
+        StringArguments = StringArgs(this);
+        //var x = "asd";
+    }
+    public Argument[] Arguments { get; private set; } = [];
     public int NrArguments
     {
         get

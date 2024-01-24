@@ -14,8 +14,8 @@ public class TypeAndMethodStatic
         RunBeforeMap(source);
         this.MethodName = source.MethodName;
         this.TypeOfClass = source.TypeOfClass;
-        this.ValueArguments = ValueArgs(source);
-        this.StringArguments = StringArgs(source);
+        this.ValueArguments = source.ValueArguments;
+        this.StringArguments =source.StringArguments;
         
         //this.MeSer=System.Text.Json.JsonSerializer.Serialize("a");
         //this.MeSer = Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -39,22 +39,6 @@ public class TypeAndMethodStatic
     public Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();
     public Argument[] StringArguments { get; set; } = Array.Empty<Argument>();
 
-    private static Argument[] ValueArgs(TypeAndMethod source)
-    {
-        return source.Arguments.Where(it => it.IsValueType).ToArray();
-    }
-    const string typeofString = "String";
-    private static Argument[] StringArgs(TypeAndMethod source)
-    {
-        return source.Arguments
-            .Where(it => !it.IsValueType)
-            .Where(it =>
-                (it.TypeArgument == typeofString)
-                ||
-                (it.TypeArgument == typeofString + "?")
-                )
-            .ToArray();
-    }
     //[IgnoreProperty]
     //public string FullName
     //{
