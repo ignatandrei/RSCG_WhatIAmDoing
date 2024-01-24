@@ -1,13 +1,14 @@
 ﻿namespace RSCG_WhatIAmDoing;
 public class TypeAndMethod
 {
-    public static TypeAndMethod InvalidEmpty = new TypeAndMethod("", "", "", "");
-    public TypeAndMethod(string typeOfClass, string methodInvocation, string typeReturn, string nameOfVariable)
+    public static TypeAndMethod InvalidEmpty = new TypeAndMethod("", "", null, "");
+    public TypeAndMethod(string typeOfClass, string methodInvocation, ITypeSymbol? typeReturn, string nameOfVariable)
     {
         InstanceIsNotNull = true;
         TypeOfClass = typeOfClass;
         MethodInvocation = methodInvocation;
-        TypeReturn = typeReturn;
+        TypeReturn = typeReturn?.ToString()??"";
+        
         NameOfVariable = nameOfVariable;
 
     }

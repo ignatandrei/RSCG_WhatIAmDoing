@@ -93,7 +93,7 @@ public class GeneratorWIAD : IIncrementalGenerator
         {
             var typeOfClass = instance.Type;
             var nameVar = instance.Local.Name;
-            typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn?.ToString() ?? "", nameVar);
+            typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn , nameVar);
 
         }
         //maybe do this before?
