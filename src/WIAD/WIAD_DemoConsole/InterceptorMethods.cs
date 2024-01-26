@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace WIAD_DemoConsole;
 
-[InterceptStatic("System.IO.File.*")]
+[InterceptStatic("System.IO.File.*ts")]
 internal class InterceptorMethodStatic
 {
     static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new ();
@@ -18,7 +18,7 @@ internal class InterceptorMethodStatic
         var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodStatic>(typeAndMethodStatic);
         ArgumentNullException.ThrowIfNull(typeAndMethod);
         _cache.TryAdd(id, typeAndMethod);
-        Console.WriteLine($"!!!!I am calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with following arguments");
+        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with following arguments");
         if(valueValues.Count > 0)
         {
             var values=string.Join(";", valueValues.Select(static it => $"{it.Key}={it.Value}"));

@@ -7,11 +7,38 @@ namespace RSCG_WhatIAmDoing;
 [Generator]
 public class GeneratorWIAD : IIncrementalGenerator
 {
+    private static bool IsAppliedOnClass(
+    SyntaxNode syntaxNode,
+    CancellationToken cancellationToken)
+    {
+        return syntaxNode is ClassDeclarationSyntax classDeclaration;
+
+    }
+    private static DataFromInterceptStatic FindAttributeDataStatic(
+    GeneratorAttributeSyntaxContext context,
+    CancellationToken cancellationToken)
+    {
+        var type = (INamedTypeSymbol)context.TargetSymbol;
+        var dataInfo = new DataFromInterceptStatic(type);
+        return dataInfo;
+    }
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        //find attributes to intercept
+        var staticToIntercept = context.SyntaxProvider.ForAttributeWithMetadataName(
+            "RSCG_WhatIAmDoing.InterceptStaticAttribute",
+            IsAppliedOnClass,
+            FindAttributeDataStatic
+            )
+             .Collect()
+            .SelectMany((data, _) => data.Distinct())
+            .Collect()
+        ;
+
         MethodsToIntercept methods = new();
 
-        var data=methods.Methods.Select(static m => m.MethodName!).ToArray();
+        var data = methods.Methods.Select(static m => m.MethodName!).ToArray();
         var classesToIntercept = context.SyntaxProvider.CreateSyntaxProvider(
                 predicate: (s, _) => IsSyntaxTargetForGeneration(s, data),
                 transform: static (context, token) =>
@@ -22,20 +49,33 @@ public class GeneratorWIAD : IIncrementalGenerator
             .Where(static m => m is not null)!
             ;
         var compilationAndData
-         = context.CompilationProvider.Combine(classesToIntercept.Collect()).Combine(context.AdditionalTextsProvider.Collect());
+         = context.CompilationProvider.Combine(classesToIntercept.Collect())
+           .Combine(staticToIntercept);  
+         //.Combine(context.AdditionalTextsProvider.Collect());
+
         context.RegisterSourceOutput(compilationAndData,
            (spc, data) =>
            ExecuteGen(spc, data!, methods));
 
     }
 
-    private void ExecuteGen(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<AdditionalText> Right) value,MethodsToIntercept methods)
+    private void ExecuteGen(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value, MethodsToIntercept methods)
     {
         var textes = value
     .Right.ToArray()
-    .Select(it => new { it.Path, text = it.GetText()?.ToString() })
+    .Select(it => it.TypesTo )
+    .Distinct()
     .ToArray();
+
         ;
+        var types=textes
+            .SelectMany(it => it.Split(','))
+            .Select(it=> it?.Trim())
+            .Where(it=>!string.IsNullOrWhiteSpace(it))
+            .Select(it=>it!)
+            .Distinct()
+            .ToArray()??[];
+
 
         var compilation = value.Left.Left;
 
@@ -67,7 +107,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             bool replaceEmptyLines = true;
             while (replaceEmptyLines)
             {
-                replaceEmptyLines= false;
+                replaceEmptyLines = false;
                 if (fullCall.StartsWith("\r"))
                 {
                     replaceEmptyLines = true;
@@ -79,7 +119,7 @@ public class GeneratorWIAD : IIncrementalGenerator
                     fullCall = fullCall.Substring(1);
                 }
             }
-            fullCall= fullCall.Trim();
+            fullCall = fullCall.Trim();
             justMethod = fullCall.IndexOf("(");
             if (justMethod != null && justMethod > 0)
             {
@@ -93,16 +133,16 @@ public class GeneratorWIAD : IIncrementalGenerator
         {
             var typeOfClass = instance.Type;
             var nameVar = instance.Local.Name;
-            typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn , nameVar);
+            typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
 
         }
         //maybe do this before?
-        if(!methods.Methods.Any( m => m.ItsATypeAndMethod(typeAndMethod)))
+        if (!methods.Methods.Any(m => m.ItsATypeAndMethod(typeAndMethod)))
         {
-            return new Tuple<TypeAndMethod,IOperation>( TypeAndMethod.InvalidEmpty, op ); 
+            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
 
-        
+
         if (invocation != null && invocation.Arguments.Length > 0)
         {
             arguments = invocation
@@ -112,9 +152,9 @@ public class GeneratorWIAD : IIncrementalGenerator
             .ToArray();
         }
 
-        typeAndMethod.SetArguments (arguments);
+        typeAndMethod.SetArguments(arguments);
 
-        return new Tuple<TypeAndMethod, IOperation>(typeAndMethod, op );
+        return new Tuple<TypeAndMethod, IOperation>(typeAndMethod, op);
 
     })
     .Where(it => it.Item1.IsValid())
@@ -138,15 +178,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
             var methodName = item.MethodName;
             var typeOfClass = item.TypeOfClass;
-            //string nameFile = typeOfClass + "_" + methodName;
-            //var nrFiles = nrFilesPerMethodAndClass[nameFile];
 
-            //var nr = nrFiles.number;
-            //nr++;
-            //nrFilesPerMethodAndClass[nameFile]= (nr, nrFiles.total);
-            //nameFile += $"_nr_{nr}_from_{nrFiles.total}";
-            //var typeReturn = item.TypeReturn;
-            //ser.nameFileToBeWritten = nameFile;
             var nameOfVariable = item.NameOfVariable;
             int extraLength = ser.extraLength;
 
@@ -169,57 +201,26 @@ public class GeneratorWIAD : IIncrementalGenerator
                 dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
             }
 
-        }
 
-        foreach (var ser in dataForSerializeFiles)
-        {
-            var name = ser.Key.MethodInvocation;
-            var fileText = textes.FirstOrDefault(it => it.Path.EndsWith(name + ".txt"))?.text;
-            if (fileText == null)
+            
+            foreach (var ser1 in dataForSerializeFiles)
             {
-                fileText = textes.FirstOrDefault(it => it.Path.EndsWith("GenericInterceptorForAllMethods.txt"))?.text;
-
+                RSCG_WhatIAmDoing.AOP v = new AOP(ser1.Value);
+                string fileContent = v.Render();
+                spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
             }
-            if (fileText != null)
-            {
-                Template? template=null;
-                try
-                {
-                    //template = Template.Parse(fileText);
-                    //string fileContent = template.Render(new { ser = ser.Value, Version = "8.2023.2811.524" }, m => m.Name);
-                    RSCG_WhatIAmDoing.AOP v=new AOP(ser.Value);
-                    string fileContent = v.Render();
-                    spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", fileContent);
-                }
-                catch( Exception)
-                {
-                    var m=template?.Messages?.FirstOrDefault();
-                    var msg = m?.ToString() ?? "";
-                    Diagnostic d1 = Diagnostic.Create(
-    new DiagnosticDescriptor("RSCG_InterceptorTemplate",
-    "RSCG_WIAD_002",
-    $"parsing template error method {name} " +msg, "RSCG_InterceptorTemplate",
-    DiagnosticSeverity.Error,
-    true),
-    Location.None);
+            //Diagnostic d = Diagnostic.Create(
+            //    new DiagnosticDescriptor("RSCG_InterceptorTemplate",
+            //    "RSCG_WIAD_001",
+            //    $"no template for method {name}", "RSCG_InterceptorTemplate",
+            //    DiagnosticSeverity.Warning,
+            //    true),
+            //    Location.None);
 
-                    spc.ReportDiagnostic(d1);
-
-                }
-                continue;
-            }
-            Diagnostic d = Diagnostic.Create(
-                new DiagnosticDescriptor("RSCG_InterceptorTemplate",
-                "RSCG_WIAD_001",
-                $"no template for method {name}", "RSCG_InterceptorTemplate",
-                DiagnosticSeverity.Warning,
-                true),
-                Location.None);
-
-            spc.ReportDiagnostic(d);
+            //spc.ReportDiagnostic(d);
             //write default?            
             //spc.AddSource(ser.Value.nameFileToBeWritten + ".cs", ser.Value.DataToBeWriten);
-            continue;
+            //continue;
 
 
         }
