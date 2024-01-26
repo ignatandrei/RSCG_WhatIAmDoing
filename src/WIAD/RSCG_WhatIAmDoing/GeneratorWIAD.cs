@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
+using System.Text.RegularExpressions;
 
 namespace RSCG_WhatIAmDoing;
 [Generator]
@@ -36,11 +37,9 @@ public class GeneratorWIAD : IIncrementalGenerator
             .Collect()
         ;
 
-        MethodsToIntercept methods = new();
-
-        var data = methods.Methods.Select(static m => m.MethodName!).ToArray();
+        
         var classesToIntercept = context.SyntaxProvider.CreateSyntaxProvider(
-                predicate: (s, _) => IsSyntaxTargetForGeneration(s, data),
+                predicate: (s, _) => IsSyntaxTargetForGeneration(s),
                 transform: static (context, token) =>
                 {
                     var operation = context.SemanticModel.GetOperation(context.Node, token);
@@ -55,11 +54,11 @@ public class GeneratorWIAD : IIncrementalGenerator
 
         context.RegisterSourceOutput(compilationAndData,
            (spc, data) =>
-           ExecuteGen(spc, data!, methods));
+           ExecuteGen(spc, data!));
 
     }
 
-    private void ExecuteGen(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value, MethodsToIntercept methods)
+    private void ExecuteGen(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value)
     {
         var textes = value
     .Right.ToArray()
@@ -74,8 +73,10 @@ public class GeneratorWIAD : IIncrementalGenerator
             .Where(it=>!string.IsNullOrWhiteSpace(it))
             .Select(it=>it!)
             .Distinct()
-            .ToArray()??[];
+            .ToArray();
 
+        if (types.Length == 0)
+            return;
 
         var compilation = value.Left.Left;
 
@@ -92,6 +93,23 @@ public class GeneratorWIAD : IIncrementalGenerator
         if (instance == null)
         {
             var staticMember = invocation?.TargetMethod?.ToDisplayString();
+            bool hasType = false;
+            foreach (var item in types)
+            {
+                var regex = item;
+
+                var temp = Regex.IsMatch(staticMember, regex);
+                if (temp)
+                {
+                    hasType = true;
+                    break;
+                }
+            }
+
+            if (!hasType)
+            {
+                return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+            }
             var justMethod = staticMember?.IndexOf("(");
             if (justMethod != null && justMethod > 0)
             {
@@ -131,16 +149,15 @@ public class GeneratorWIAD : IIncrementalGenerator
         }
         else
         {
-            var typeOfClass = instance.Type;
-            var nameVar = instance.Local.Name;
-            typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
+            //for instance return nothing for this time
+            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+            //var typeOfClass = instance.Type;
+            //var nameVar = instance.Local.Name;
+            //typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
 
         }
         //maybe do this before?
-        if (!methods.Methods.Any(m => m.ItsATypeAndMethod(typeAndMethod)))
-        {
-            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
-        }
+        
 
 
         if (invocation != null && invocation.Arguments.Length > 0)
@@ -228,14 +245,12 @@ public class GeneratorWIAD : IIncrementalGenerator
 
     }
 
-    private bool IsSyntaxTargetForGeneration(SyntaxNode s, string[] data)
+    private bool IsSyntaxTargetForGeneration(SyntaxNode s)
     {
-        if (data.Length == 0) return false;
+        
         if (!TryGetMapMethodName(s, out var method))
             return false;
-        if (data.Contains(method))
-            return true;
-        return false;
+        return true;
 
     }
     public static bool TryGetMapMethodName(SyntaxNode node, out string? methodName)
