@@ -189,7 +189,9 @@ public class GeneratorWIAD : IIncrementalGenerator
         Dictionary<TypeAndMethod, DataForSerializeFile> dataForSerializeFiles = new();
         foreach (var item in ops.Keys)
         {
+            
             var ser = new DataForSerializeFile(item);
+            var val = ops[item];
             dataForSerializeFiles.Add(item, ser);
             ser.item = item;
 
@@ -219,13 +221,6 @@ public class GeneratorWIAD : IIncrementalGenerator
             }
 
 
-            
-            foreach (var ser1 in dataForSerializeFiles)
-            {
-                RSCG_WhatIAmDoing.AOP v = new AOP(ser1.Value);
-                string fileContent = v.Render();
-                spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
-            }
             //Diagnostic d = Diagnostic.Create(
             //    new DiagnosticDescriptor("RSCG_InterceptorTemplate",
             //    "RSCG_WIAD_001",
@@ -240,6 +235,13 @@ public class GeneratorWIAD : IIncrementalGenerator
             //continue;
 
 
+        }
+        foreach (var ser1 in dataForSerializeFiles)
+        {
+
+            RSCG_WhatIAmDoing.AOP v = new AOP(ser1.Value);
+            string fileContent = v.Render();
+            spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
         }
 
 

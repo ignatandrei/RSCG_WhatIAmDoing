@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 
 namespace WIAD_DemoConsole;
 
-[InterceptStatic("System.IO.File.*ts")]
+//[InterceptStatic("System.IO.File.*ts")]
+[InterceptStatic("System.IO.File.*")]
+
 internal class InterceptorMethodStatic
 {
     static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new ();

@@ -1,4 +1,7 @@
-﻿namespace RSCG_WhatIAmDoing;
+﻿using System.Diagnostics;
+
+namespace RSCG_WhatIAmDoing;
+[DebuggerDisplay("{MethodInvocation}")]
 public class TypeAndMethod
 {
     public static TypeAndMethod InvalidEmpty = new TypeAndMethod("", "", null, "");
