@@ -18,3 +18,4 @@ WriteLine("static");
 
 var pers = new Person("Andrei", "Ignat");
 WriteLine(pers.FullName());
+pers.WriteNameToConsole();

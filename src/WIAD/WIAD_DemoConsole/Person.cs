@@ -1,4 +1,5 @@
-﻿namespace WIAD_DemoConsole;
+﻿
+namespace WIAD_DemoConsole;
 public class Person
 {
     public int Id { get; set; }
@@ -19,5 +20,10 @@ public class Person
     public string FullNameWithSeparator(string separator=" ")
     {
         return $"{FirstName}{separator}{LastName}";
+    }
+
+    internal void WriteNameToConsole()
+    {
+        Console.WriteLine(this.FullNameWithSeparator("--->"));
     }
 }
