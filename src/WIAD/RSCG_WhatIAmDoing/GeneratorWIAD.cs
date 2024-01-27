@@ -120,6 +120,15 @@ public class GeneratorWIAD : IIncrementalGenerator
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
         var typeOfClass = instance.Type;
+        if (typeOfClass == null)
+        {
+            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+        }
+        var s=typeOfClass.ToString();
+        if(!types.Contains(s))
+        {
+            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+        }
         var nameVar = instance.Local.Name;
         typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
 
