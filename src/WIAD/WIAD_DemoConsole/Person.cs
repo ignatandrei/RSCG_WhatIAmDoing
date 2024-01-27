@@ -14,6 +14,6 @@ public class Person
     
     public string FullName()
     {
-        return $"{FirstName} {LastName} {Age}";
+        return $"{FirstName} {LastName}";
     }
 }
