@@ -50,9 +50,9 @@ public class TypeAndMethod
         return source.Arguments
             .Where(it => !it.IsValueType)
             .Where(it =>
-                (it.TypeArgument != typeofString)
+                (it.TypeArgument == typeofString)
                 ||
-                (it.TypeArgument != typeofString + "?")
+                (it.TypeArgument == typeofString + "?")
                 )
             .ToArray();
     }
