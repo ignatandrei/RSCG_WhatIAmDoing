@@ -15,3 +15,5 @@ Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
 Console.WriteLine(FibNoMemory.Fibonaci(7));
 
 WriteLine("static");
+
+var p = new Person("Andrei", "Ignat");
