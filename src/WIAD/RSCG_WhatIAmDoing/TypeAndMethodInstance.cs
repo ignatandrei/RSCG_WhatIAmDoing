@@ -1,12 +1,12 @@
 ﻿namespace RSCG_WhatIAmDoing;
 
-public class TypeAndMethodStatic
+public class TypeAndMethodInstance
 {
-    public TypeAndMethodStatic()
+    public TypeAndMethodInstance()
     {
 
     }
-    public TypeAndMethodStatic(TypeAndMethod? source)
+    public TypeAndMethodInstance(TypeAndMethod? source)
     {
         if (source == null)
             throw new ArgumentNullException(nameof(source));
@@ -16,8 +16,6 @@ public class TypeAndMethodStatic
         this.ValueArguments = source.ValueArguments;
         this.StringArguments =source.StringArguments;
         this.IsVoid = source.IsVoid();
-        //this.MeSer=System.Text.Json.JsonSerializer.Serialize("a");
-        //this.MeSer = Newtonsoft.Json.JsonConvert.SerializeObject(this);
     }
             
     
@@ -26,8 +24,8 @@ public class TypeAndMethodStatic
 
         if (source == null)
             throw new ArgumentNullException(nameof(source));
-        if (!source.IsStatic)
-            throw new ArgumentException("NOT IsStatic");
+        if (source.IsStatic)
+            throw new ArgumentException("IsStatic");
 
         if (!source.IsValid())
             throw new ArgumentException("NOT IsValid");

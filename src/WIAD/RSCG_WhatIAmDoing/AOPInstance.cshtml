@@ -47,9 +47,10 @@ System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
         }
 };//end stringValues
 
-        var x=WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodBefore(
+        var x=WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodBefore(
+            @ser.item.NameOfVariable,
 $$$""""
-    @ser.itemStatic
+        @ser.itemToSerialize
 """"
 ,valValues , stringValues 
 )
@@ -62,7 +63,7 @@ $$$""""
 
                 @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithoutResult(x);
+                WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodAfterWithoutResult(x);
                 
                 }
 
@@ -75,7 +76,7 @@ $$$""""
 
                 var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithResult(x,data);
+                WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodAfterWithResult(x,data);
                 return data;
                 }
             </text>
@@ -83,11 +84,11 @@ $$$""""
 
         
             catch(System.Exception ex){
-                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodException(x,ex);
+        WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodException(x,ex);
                 throw;
             }
             finally{
-                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodFinally(x);
+        WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodFinally(x);
             }
         
 }

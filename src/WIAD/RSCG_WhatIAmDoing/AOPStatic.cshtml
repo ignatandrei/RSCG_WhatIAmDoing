@@ -1,0 +1,99 @@
+@using RSCG_WhatIAmDoing
+@inherits RazorBlade.PlainTextTemplate<DataForSerializeFile>;
+@{
+    var ser = Model;
+}
+#pragma warning disable CS1591 
+#pragma warning disable CS9113
+namespace System.Runtime.CompilerServices{
+[AttributeUsage(AttributeTargets.Method,AllowMultiple =true)]
+file class InterceptsLocationAttribute(string filePath, int line, int character) : Attribute
+{
+}
+}//end namespace
+
+namespace RSCG_InterceptorTemplate{
+static partial class SimpleIntercept
+{
+
+@foreach(var loc in ser.dataForEachIntercepts){
+    <text>
+//replace code:@loc.code
+//replace code:@loc.CodeNumbered
+[System.Runtime.CompilerServices.InterceptsLocation(@@"@loc.Path", @loc.Line, @loc.StartMethod)]
+    </text>
+}
+
+//[System.Diagnostics.DebuggerStepThrough()]
+public static @(ser.item.HasTaskReturnType?"async":"") @ser.item.TypeReturn @ser.item.MethodSignature ( @ser.item.ThisArgument @ser.item.ArgumentsForCallMethod )  
+{
+
+System.Collections.Generic.Dictionary<string,string?> valValues = new (){
+
+@foreach(var val in ser.item.ValueArguments ){
+    <text>
+   { "@val.Name", @(val.Name) .ToString() } ,
+        </text>
+}
+
+};//end valValues
+
+System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
+
+@foreach(var str in ser.item.StringArguments){
+            <text>
+                { "@str.Name", @(str.Name)  ?.ToString() } ,
+            </text>
+        }
+};//end stringValues
+
+        var x=WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodBefore(
+$$$""""
+    @ser.itemToSerialize
+""""
+,valValues , stringValues 
+)
+; 
+
+        @if (ser.item.IsVoid())
+        {
+            <text>
+                try{
+
+                @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
+
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithoutResult(x);
+                
+                }
+
+            </text>    
+        }
+        else
+        {
+            <text>
+                try{
+
+                var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
+
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithResult(x,data);
+                return data;
+                }
+            </text>
+        }
+
+        
+            catch(System.Exception ex){
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodException(x,ex);
+                throw;
+            }
+            finally{
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodFinally(x);
+            }
+        
+}
+                
+
+}//end class
+
+}//namespace RSCG_InterceptorTemplate
+

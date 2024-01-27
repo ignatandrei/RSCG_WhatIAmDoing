@@ -6,13 +6,15 @@ class DataForSerializeFile
     {
         this.item = item;
 
-        if (item.IsStatic) { 
-        this.itemStatic =
+        if (item.IsStatic)  
+            this.itemToSerialize =
             Newtonsoft.Json.JsonConvert.SerializeObject(new TypeAndMethodStatic(item))
             ;
-
-
-        }
+        
+        else
+            this.itemToSerialize =
+                Newtonsoft.Json.JsonConvert.SerializeObject(new TypeAndMethodInstance(item))
+                ;
 
     var x=    $$$""""
     {"TypeOfClass":"{{{item}}}","MethodName":"Exists","ValueArguments":[],"StringArguments":[{"IsValueType":false,"TypeAndName":"string? path","TypeArgument":"String","Name":"path"}]}
@@ -22,20 +24,20 @@ class DataForSerializeFile
         nameFileToBeWritten = $"{item.TypeOfClass}_{item.MethodName}_{count}";
     }
     public TypeAndMethod item;
-    public string? itemStatic { get; set; }
-    public int extraLength
-    {
-        get
-        {
-            var extra = item.NameOfVariable.Length;
-            if (extra > 0)
-            {
-                //acknowledge the dot
-                extra += 1;
-            }
-            return extra;
-        }
-    }
+    public string? itemToSerialize { get; set; }
+    //public int extraLength
+    //{
+    //    get
+    //    {
+    //        var extra = item.NameOfVariable.Length;
+    //        if (extra > 0)
+    //        {
+    //            //acknowledge the dot
+    //            extra += 1;
+    //        }
+    //        return extra;
+    //    }
+    //}
 
     public string Declaration
     {

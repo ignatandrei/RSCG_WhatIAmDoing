@@ -12,9 +12,6 @@
 	<ItemGroup>
 		<PackageReference Include="RazorBlade" Version="0.4.3" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
 	</ItemGroup>
-	<ItemGroup>
-        <AdditionalFiles Include="AOP.cshtml" />
-    </ItemGroup>
 	<PropertyGroup>
 
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -27,6 +24,8 @@
 		</PackageReference>
 		<PackageReference Include="System.CodeDom" PrivateAssets="all" GeneratePathProperty="true" Version="7.0.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
+		<None Remove="AOPInstance.cshtml" />
+		<None Remove="AOPStatic.cshtml" />
 		<None Remove="bin\Debug\netstandard2.0\\RSCG_Templating.dll" />
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
@@ -62,6 +61,13 @@
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<WarningsNotAsErrors>CS0436</WarningsNotAsErrors>
 	</PropertyGroup>
+
+	<!--<ItemGroup>
+	  <AdditionalFiles Include="AOPInstance.cshtml">
+	    <IsRazorBlade>True</IsRazorBlade>
+	    <Namespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(RelativeDir)', '').Replace('\', '.').Replace('/', '.').Trim('.'))</Namespace>
+	  </AdditionalFiles>
+	</ItemGroup>-->
 
 	
 	<ItemGroup>

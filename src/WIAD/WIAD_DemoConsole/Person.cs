@@ -14,6 +14,10 @@ public class Person
     
     public string FullName()
     {
-        return $"{FirstName} {LastName}";
+        return FullNameWithSeparator(",");
+    }
+    public string FullNameWithSeparator(string separator=" ")
+    {
+        return $"{FirstName}{separator}{LastName}";
     }
 }
