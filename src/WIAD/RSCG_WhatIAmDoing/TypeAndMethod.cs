@@ -93,11 +93,15 @@ public class TypeAndMethod
             }
         }
     }
+    public bool IsVoid()
+    {
+        return TypeReturn == "void";
+    }
     public string ReturnString
     {
         get
         {
-            if (this.TypeReturn == "void")
+            if (IsVoid())
             {
                 return "";
             }

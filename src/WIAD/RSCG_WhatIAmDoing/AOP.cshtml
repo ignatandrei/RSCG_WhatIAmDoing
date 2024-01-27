@@ -54,15 +54,42 @@ $$$""""
 ,valValues , stringValues 
 )
 ; 
-	try{
-    var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
-    
-    WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfter(x,data); 
-    return data;
-    }
-    finally{
+
+        @if (ser.item.IsVoid())
+        {
+            <text>
+                try{
+
+                @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
+
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithoutResult(x);
+                
+                }
+
+            </text>    
+        }
+        else
+        {
+            <text>
+                try{
+
+                var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
+
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodAfterWithResult(x,data);
+                return data;
+                }
+            </text>
+        }
+
         
-    }
+            catch(System.Exception ex){
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodException(x,ex);
+                throw;
+            }
+            finally{
+                WIAD_DemoConsole.InterceptorMethodStatic.InterceptStaticMethodFinally(x);
+            }
+        
 }
                 
 

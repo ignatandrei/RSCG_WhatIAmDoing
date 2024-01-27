@@ -36,10 +36,14 @@ internal class InterceptorMethodStatic
         Console.WriteLine($"please remember id {id}");
         return id;
     }
-    internal static void InterceptStaticMethodAfter(string id , object? result)
+    internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
-        _cache.TryRemove(id, out var typeAndMethod);
 
+        Console.WriteLine($"After method {id} ");
+    }
+    internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
+    {
+        
         Console.WriteLine($"After method {id} returning {result}");
     }
     internal static void InterceptStaticMethodException(string id,Exception ex)
@@ -53,6 +57,12 @@ internal class InterceptorMethodStatic
         {
             Console.WriteLine($"strange the call to begin has not been intercepted ");
         }
+    }
+    internal static void InterceptStaticMethodFinally(string id)
+    {
+        _cache.TryRemove(id, out var typeAndMethod);
+        Console.WriteLine($"Exit method {id} ");
+
     }
 
 }

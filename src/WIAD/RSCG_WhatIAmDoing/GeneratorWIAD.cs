@@ -60,14 +60,14 @@ public class GeneratorWIAD : IIncrementalGenerator
 
     private void ExecuteGen(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value)
     {
-        var textes = value
+        var AlltypesToIntercept = value
     .Right.ToArray()
     .Select(it => it.TypesTo )
     .Distinct()
     .ToArray();
 
         ;
-        var types=textes
+        var types=AlltypesToIntercept
             .SelectMany(it => it.Split(','))
             .Select(it=> it?.Trim())
             .Where(it=>!string.IsNullOrWhiteSpace(it))
