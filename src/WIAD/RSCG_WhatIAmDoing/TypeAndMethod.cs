@@ -154,13 +154,13 @@ public class TypeAndMethod
             }
         }
     }
-
+    static int nrSignature=0;
     public string MethodSignature
     {
         get
         {
             var nameOfVariable = NameOfVariable.Replace(".", "_");
-            return $"Intercept_{nameOfVariable}_{MethodName}";
+            return $"Intercept_{nameOfVariable}_{MethodName}_{nrSignature++}";
         }
     }
     public void SetArguments(Argument[] arguments)

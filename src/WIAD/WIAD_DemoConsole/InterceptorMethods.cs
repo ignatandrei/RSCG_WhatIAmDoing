@@ -4,8 +4,8 @@ using System.Collections.Concurrent;
 namespace WIAD_DemoConsole;
 
 //[InterceptStatic("System.IO.File.*ts")]
-//[InterceptStatic("System.IO.File.*")]
-//[InterceptStatic("System.Console.*")]
+[InterceptStatic("System.IO.File.*")]
+[InterceptStatic("System.Console.*")]
 [InterceptStatic("WIAD_DemoConsole.Fib.*")]
 internal class InterceptorMethodStatic
 {
@@ -34,18 +34,18 @@ internal class InterceptorMethodStatic
             Console.WriteLine($"string arguments {values}");
         }
 
-        Console.WriteLine($"please remember id {id}");
+        //Console.WriteLine($"please remember id {id}");
         return id;
     }
     internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
 
-        Console.WriteLine($"After method {id} ");
+        Console.WriteLine($"After method " + _cache[id].MethodName);
     }
     internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
     {
         
-        Console.WriteLine($"After method {id} returning {result}");
+        Console.WriteLine($"After method {_cache[id].MethodName} returning {result}");
     }
     internal static void InterceptStaticMethodException(string id,Exception ex)
     {
@@ -62,7 +62,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodFinally(string id)
     {
         _cache.TryRemove(id, out var typeAndMethod);
-        Console.WriteLine($"Exit method {id} ");
+        Console.WriteLine($"Exit method {typeAndMethod?.MethodName} ");
 
     }
 

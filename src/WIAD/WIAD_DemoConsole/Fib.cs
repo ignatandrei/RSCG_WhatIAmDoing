@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace WIAD_DemoConsole;
 internal class Fib
 {
@@ -21,6 +16,7 @@ internal class Fib
         {
             return 1;
         }
+        //return 10;
         return Fibonaci(n - 1) + Fibonaci(n - 2);
     }
 }

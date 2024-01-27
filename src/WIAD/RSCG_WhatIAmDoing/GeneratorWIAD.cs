@@ -37,7 +37,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             .Collect()
         ;
 
-        
+
         var classesToIntercept = context.SyntaxProvider.CreateSyntaxProvider(
                 predicate: (s, _) => IsSyntaxTargetForGeneration(s),
                 transform: static (context, token) =>
@@ -49,8 +49,8 @@ public class GeneratorWIAD : IIncrementalGenerator
             ;
         var compilationAndData
          = context.CompilationProvider.Combine(classesToIntercept.Collect())
-           .Combine(staticToIntercept);  
-         //.Combine(context.AdditionalTextsProvider.Collect());
+           .Combine(staticToIntercept);
+        //.Combine(context.AdditionalTextsProvider.Collect());
 
         context.RegisterSourceOutput(compilationAndData,
            (spc, data) =>
@@ -62,16 +62,16 @@ public class GeneratorWIAD : IIncrementalGenerator
     {
         var AlltypesToIntercept = value
     .Right.ToArray()
-    .Select(it => it.TypesTo )
+    .Select(it => it.TypesTo)
     .Distinct()
     .ToArray();
 
         ;
-        var types=AlltypesToIntercept
+        var types = AlltypesToIntercept
             .SelectMany(it => it.Split(','))
-            .Select(it=> it?.Trim())
-            .Where(it=>!string.IsNullOrWhiteSpace(it))
-            .Select(it=>it!)
+            .Select(it => it?.Trim())
+            .Where(it => !string.IsNullOrWhiteSpace(it))
+            .Select(it => it!)
             .Distinct()
             .ToArray();
 
@@ -93,6 +93,10 @@ public class GeneratorWIAD : IIncrementalGenerator
         if (instance == null)
         {
             var staticMember = invocation?.TargetMethod?.ToDisplayString();
+            if(staticMember is null)
+            {
+                return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+            }
             bool hasType = false;
             foreach (var item in types)
             {
@@ -121,30 +125,30 @@ public class GeneratorWIAD : IIncrementalGenerator
             //}
             typeAndMethod = new TypeAndMethod(staticMember ?? "", typeReturn?.ToString() ?? "");
             var nameMethod = typeAndMethod.MethodName;
-            string fullCall = op.Syntax.ToFullString();
-            bool replaceEmptyLines = true;
-            while (replaceEmptyLines)
-            {
-                replaceEmptyLines = false;
-                if (fullCall.StartsWith("\r"))
-                {
-                    replaceEmptyLines = true;
-                    fullCall = fullCall.Substring(1);
-                }
-                if (fullCall.StartsWith("\n"))
-                {
-                    replaceEmptyLines = true;
-                    fullCall = fullCall.Substring(1);
-                }
-            }
-            fullCall = fullCall.Trim();
-            justMethod = fullCall.IndexOf("(");
-            if (justMethod != null && justMethod > 0)
-            {
-                fullCall = fullCall.Substring(0, justMethod.Value);
-            }
-            var nameVar = fullCall.Substring(0, fullCall.Length - nameMethod.Length - ".".Length);
-            typeAndMethod.NameOfVariable = nameVar;
+            //string fullCall = op.Syntax.ToFullString();
+            //bool replaceEmptyLines = true;
+            //while (replaceEmptyLines)
+            //{
+            //    replaceEmptyLines = false;
+            //    if (fullCall.StartsWith("\r"))
+            //    {
+            //        replaceEmptyLines = true;
+            //        fullCall = fullCall.Substring(1);
+            //    }
+            //    if (fullCall.StartsWith("\n"))
+            //    {
+            //        replaceEmptyLines = true;
+            //        fullCall = fullCall.Substring(1);
+            //    }
+            //}
+            //fullCall = fullCall.Trim();
+            //justMethod = fullCall.IndexOf("(");
+            //if (justMethod != null && justMethod > 0)
+            //{
+            //    fullCall = fullCall.Substring(0, justMethod.Value);
+            //}
+            //var nameVar = fullCall.Substring(0, fullCall.Length - nameMethod.Length - ".".Length);
+            //typeAndMethod.NameOfVariable = nameVar;
 
         }
         else
@@ -157,7 +161,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
         }
         //maybe do this before?
-        
+
 
 
         if (invocation != null && invocation.Arguments.Length > 0)
@@ -189,7 +193,7 @@ public class GeneratorWIAD : IIncrementalGenerator
         Dictionary<TypeAndMethod, DataForSerializeFile> dataForSerializeFiles = new();
         foreach (var item in ops.Keys)
         {
-            
+
             var ser = new DataForSerializeFile(item);
             var val = ops[item];
             dataForSerializeFiles.Add(item, ser);
@@ -217,7 +221,9 @@ public class GeneratorWIAD : IIncrementalGenerator
                 dataForEachIntercept.code = code;
                 dataForEachIntercept.Path = lineSpan.Path;
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
-                dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
+                var startMethod = code.IndexOf(item.MethodName + "(", startLinePosition.Character);
+                //dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
+                dataForEachIntercept.StartMethod = startMethod + 1 + extraLength;
             }
 
 
@@ -249,7 +255,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
     private bool IsSyntaxTargetForGeneration(SyntaxNode s)
     {
-        
+
         if (!TryGetMapMethodName(s, out var method))
             return false;
         return true;
@@ -257,35 +263,46 @@ public class GeneratorWIAD : IIncrementalGenerator
     }
     public static bool TryGetMapMethodName(SyntaxNode node, out string? methodName)
     {
+        if (node is not InvocationExpressionSyntax inv)
+        {
+            methodName = default;
+            return false;
+        }
         methodName = default;
-        if (node is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Name: { Identifier: { ValueText: var method } } } } m)
+        if (inv is InvocationExpressionSyntax { Expression: IdentifierNameSyntax { Identifier: { ValueText: var methodValue } } } )
+        {
+            methodName = methodValue;
+        }
+        if (inv is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Name: { Identifier: { ValueText: var method } } } } )
         {
             methodName = method;
-            var parent = m.Parent;
-            while (parent is not null && parent is not ClassDeclarationSyntax)
-            {
-                parent = parent.Parent;
-            }
-            if (parent == null)
-                return true;//in program.cs without declaration of a class
-            var cds = parent as ClassDeclarationSyntax;
-            if (cds is null)
-                return false;
-            var attr = cds.AttributeLists;
-            if(attr.Count == 0)
-                return true;//no intercept static attribute
-
-            var existsStatic =
-                 attr
-                 .SelectMany(it => it.Attributes)
-                 .Select(it => it.Name)
-                 .Any(it => it.ToFullString().Contains("InterceptStatic"));
-            if (existsStatic) //do not intercept the interceptor
-                return false;
-
-            return true;
         }
-        return false;
+        if (string.IsNullOrWhiteSpace(methodName))
+            return false;
+
+        var parent = inv.Parent;
+        while (parent is not null && parent is not ClassDeclarationSyntax)
+        {
+            parent = parent.Parent;
+        }
+        if (parent == null)
+            return true;//in program.cs without declaration of a class
+        var cds = parent as ClassDeclarationSyntax;
+        if (cds is null)
+            return false;
+        var attr = cds.AttributeLists;
+        if (attr.Count == 0)
+            return true;//no intercept static attribute
+
+        var existsStatic =
+             attr
+             .SelectMany(it => it.Attributes)
+             .Select(it => it.Name)
+             .Any(it => it.ToFullString().Contains("InterceptStatic"));
+        if (existsStatic) //do not intercept the interceptor
+            return false;
+
+        return true;
     }
 
 }
