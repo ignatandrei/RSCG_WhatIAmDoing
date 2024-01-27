@@ -10,12 +10,13 @@ namespace WIAD_DemoConsole;
 internal class InterceptorMethodStatic
 {
     static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new ();
-    internal static string InterceptStaticMethodBefore(string typeAndMethodStatic, Dictionary<string,string?> valueValues, Dictionary<string, string?> stringValues  )
+    internal static string InterceptStaticMethodBefore(        
+        string typeAndMethodStatic, 
+        Dictionary<string,string?> valueValues, 
+        Dictionary<string, string?> stringValues  
+        )
     {
-        Dictionary<string, string> dict = new()
-        {
-            {"asd","asdasd" }
-        };
+        
         var id = Guid.NewGuid().ToString();
         //InterceptorMethodStatic.InterceptStaticMethodBefore("asd", new[] { "a" }, new[] { "b" });
         var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodStatic>(typeAndMethodStatic);
@@ -36,13 +37,13 @@ internal class InterceptorMethodStatic
             argsToBeTyped += values;
         }
         typeAndMethod.Tag = argsToBeTyped;
-        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with {argsToBeTyped} ");
+        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass}   with {argsToBeTyped} ");
         return id;
     }
     internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
 
-        //Console.WriteLine($"After method " + _cache[id].MethodName);
+        Console.WriteLine($"After method " + _cache[id].MethodName);
     }
     internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
     {
