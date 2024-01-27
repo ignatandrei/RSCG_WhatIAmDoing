@@ -19,6 +19,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Spectre.Console" Version="0.48.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 	</ItemGroup>
 	<PropertyGroup>

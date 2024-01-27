@@ -9,10 +9,10 @@ if (File.Exists(nameFile))
 }
 
 File.WriteAllText(nameFile, "Hello, World!");
-File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
+//File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
 
-Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
-Console.WriteLine(FibNoMemory.Fibonaci(7));
+//Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
+//Console.WriteLine(FibNoMemory.Fibonaci(7));
 
 WriteLine("static");
 

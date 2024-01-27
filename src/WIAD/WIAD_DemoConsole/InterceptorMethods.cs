@@ -1,7 +1,4 @@
-﻿using RSCG_WhatIAmDoing;
-using System.Collections.Concurrent;
-
-namespace WIAD_DemoConsole;
+﻿namespace WIAD_DemoConsole;
 
 //[InterceptStatic("System.IO.File.*ts")]
 [InterceptStatic("System.IO.File.*")]
@@ -9,6 +6,10 @@ namespace WIAD_DemoConsole;
 [InterceptStatic("WIAD_DemoConsole.Fib.*")]
 internal class InterceptorMethodStatic
 {
+    public InterceptorMethodStatic()
+    {
+        Console.WriteLine("!!!! This should not be intercepted!");
+    }
     static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new ();
     internal static string InterceptStaticMethodBefore(        
         string typeAndMethodStatic, 
@@ -37,18 +38,19 @@ internal class InterceptorMethodStatic
             argsToBeTyped += values;
         }
         typeAndMethod.Tag = argsToBeTyped;
-        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass}   with {argsToBeTyped} ");
+        string color = typeAndMethod.IsVoid ? "green" : "yellow";
+        AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{argsToBeTyped}[/] ");
         return id;
     }
     internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
 
-        Console.WriteLine($"After method " + _cache[id].MethodName);
+        AnsiConsole.MarkupLineInterpolated($"finish method [bold green]{_cache[id].MethodName}[/] with args {_cache[id].Tag} ");
     }
     internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
     {
         
-        Console.WriteLine($"After method {_cache[id].MethodName} with args {_cache[id].Tag} returning {result}");
+        AnsiConsole.MarkupLineInterpolated($"end method [bold yellow]{_cache[id].MethodName}[/] with args {_cache[id].Tag} returning {result}");
     }
     internal static void InterceptStaticMethodException(string id,Exception ex)
     {
