@@ -1,8 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.Text;
-using Scriban;
-using System.Text.RegularExpressions;
+﻿using Microsoft.CodeAnalysis.Operations;
 
 namespace RSCG_WhatIAmDoing;
 [Generator]
@@ -113,7 +109,11 @@ public class GeneratorWIAD : IIncrementalGenerator
         var typeReturn = op.Type;
         var invocation = op as IInvocationOperation;
         Argument[] arguments = [];
-        var instance = invocation?.Instance as ILocalReferenceOperation;
+        IOperation? instance = invocation?.Instance as ILocalReferenceOperation;
+        if(instance == null)
+        {
+            instance = invocation?.Instance as IInstanceReferenceOperation;
+        }
         TypeAndMethod typeAndMethod;
         if (instance == null)
         {
@@ -129,7 +129,10 @@ public class GeneratorWIAD : IIncrementalGenerator
         {
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
-        var nameVar = instance.Local.Name;
+        var nameVar = "";
+        if(instance is ILocalReferenceOperation localOp)
+            nameVar = localOp.Local.Name;
+
         typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
 
         if (invocation != null && invocation.Arguments.Length > 0)
@@ -189,9 +192,13 @@ public class GeneratorWIAD : IIncrementalGenerator
                 dataForEachIntercept.code = code;
                 dataForEachIntercept.Path = lineSpan.Path;
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
-                var startMethod = code.IndexOf(item.NameOfVariable + "." + item.MethodName + "(", startLinePosition.Character);
+                int startMethod;
+                if(item.NameOfVariable.Length>0)
+                    startMethod = code.IndexOf(item.NameOfVariable + "." + item.MethodName + "(", startLinePosition.Character)+1;//dot
+                else
+                    startMethod = code.IndexOf(item.MethodName + "(", startLinePosition.Character);
                 //dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
-                dataForEachIntercept.StartMethod = startMethod + item.NameOfVariable.Length + 2;
+                dataForEachIntercept.StartMethod = startMethod + item.NameOfVariable.Length + 1;//dot
             }
 
 

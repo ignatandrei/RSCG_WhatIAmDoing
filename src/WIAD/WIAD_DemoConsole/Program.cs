@@ -16,5 +16,5 @@ File.WriteAllText(nameFile, "Hello, World!");
 
 WriteLine("static");
 
-var p = new Person("Andrei", "Ignat");
-WriteLine(p.FullName());
+var pers = new Person("Andrei", "Ignat");
+WriteLine(pers.FullName());

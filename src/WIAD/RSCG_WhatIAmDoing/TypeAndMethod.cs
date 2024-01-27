@@ -118,7 +118,7 @@ public class TypeAndMethod
             var args = string.Join(",", Arguments.Select(a => a.Name));
             if (this.InstanceIsNotNull)
             {
-                return $"{NameOfVariable}.{MethodInvocation}({args})";
+                return $"{DisplayNameOfVariable}.{MethodInvocation}({args})";
             }
             else
             {
@@ -140,13 +140,28 @@ public class TypeAndMethod
             return args;
         }
     }
+    public string DisplayNameOfVariable
+    {
+        get
+        {
+            if (this.NameOfVariable.Length==0)
+            {
+                return "selfThis";
+            }
+            else
+            {
+                return NameOfVariable;
+            }
+        }
+    }
     public string ThisArgument
     {
         get
         {
             if (this.InstanceIsNotNull)
             {
-                return $"this {TypeOfClass} {NameOfVariable}";
+                
+                return $"this {TypeOfClass} {DisplayNameOfVariable}";
             }
             else
             {
