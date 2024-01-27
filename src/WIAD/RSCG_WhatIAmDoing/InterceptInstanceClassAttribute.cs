@@ -32,8 +32,9 @@ public class DataFromInterceptClass : IEquatable<DataFromInterceptClass>
         }
         MethodsTo = MethodsTo?.TrimEnd(',') ?? "";
         TypeTo ??= string.Empty;
+        FullNameClass = type.ToString();
     }
-
+    public string FullNameClass { get; set; } = "";
     public string TypeTo { get; set; }
     public string MethodsTo { get; set; }
 

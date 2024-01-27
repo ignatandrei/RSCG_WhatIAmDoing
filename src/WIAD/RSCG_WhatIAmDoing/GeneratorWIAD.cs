@@ -81,6 +81,28 @@ public class GeneratorWIAD : IIncrementalGenerator
     }
     private void ExecuteGenInstance(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) value)
     {
+
+        var namesClassToIntercept =
+            value.Right.ToArray()
+            .Select(it => it.FullNameClass)
+            .Select(it => it?.Trim())
+            .Where(it => !string.IsNullOrWhiteSpace(it))
+            .Select(it => it!)
+            .Distinct()
+            .ToArray();
+        if (namesClassToIntercept.Length == 0)
+        {
+            //TODO: make diagnostic
+            return;
+        }
+        if (namesClassToIntercept.Length > 1)
+        {
+            //TODO: make diagnostic
+            return;
+        }
+        var nameClassToIntercept = namesClassToIntercept[0];
+
+
         var types = value
     .Right.ToArray()
     .Select(it => it.TypeTo)
@@ -186,7 +208,7 @@ public class GeneratorWIAD : IIncrementalGenerator
         foreach (var item in ops.Keys)
         {
 
-            var ser = new DataForSerializeFile(item);
+            var ser = new DataForSerializeFile(item, nameClassToIntercept);
             var val = ops[item];
             dataForSerializeFiles.Add(item, ser);
             ser.item = item;
@@ -256,8 +278,26 @@ public class GeneratorWIAD : IIncrementalGenerator
     .Select(it => it.TypesTo)
     .Distinct()
     .ToArray();
-
         ;
+        var namesClassToIntercept = 
+            value.Right.ToArray()
+            .Select(it => it.FullNameClass)
+            .Select(it => it?.Trim())
+            .Where(it => !string.IsNullOrWhiteSpace(it))
+            .Select(it => it!)
+            .Distinct()
+            .ToArray();
+        if (namesClassToIntercept.Length == 0)
+        {
+            //TODO: make diagnostic
+            return;
+        }
+        if (namesClassToIntercept.Length >1)
+        {
+            //TODO: make diagnostic
+            return;
+        }
+        var nameClassToIntercept = namesClassToIntercept[0];
         var types = AlltypesToIntercept
             .SelectMany(it => it.Split(','))
             .Select(it => it?.Trim())
@@ -376,7 +416,7 @@ public class GeneratorWIAD : IIncrementalGenerator
         foreach (var item in ops.Keys)
         {
 
-            var ser = new DataForSerializeFile(item);
+            var ser = new DataForSerializeFile(item, nameClassToIntercept);
             var val = ops[item];
             dataForSerializeFiles.Add(item, ser);
             ser.item = item;

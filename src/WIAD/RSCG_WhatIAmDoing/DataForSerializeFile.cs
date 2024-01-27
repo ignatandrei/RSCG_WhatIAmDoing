@@ -1,11 +1,12 @@
 ﻿namespace RSCG_WhatIAmDoing;
 class DataForSerializeFile
 {
+
     static int count = 0;
-    public DataForSerializeFile(TypeAndMethod item)
+    public DataForSerializeFile(TypeAndMethod item,string nameClassToSerialize)
     {
         this.item = item;
-
+        NameClassToSerialize = nameClassToSerialize;
         if (item.IsStatic)  
             this.itemToSerialize =
             Newtonsoft.Json.JsonConvert.SerializeObject(new TypeAndMethodStatic(item))
@@ -96,4 +97,6 @@ namespace RSCG_InterceptorTemplate{
             return cnt;
         }
     }
+
+    public string NameClassToSerialize { get; }
 }

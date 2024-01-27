@@ -47,7 +47,7 @@ System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
         }
 };//end stringValues
 
-        var x=WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodBefore(
+        var x= @(Model.NameClassToSerialize) .InterceptInstanceMethodBefore(
         @ser.item.DisplayNameOfVariable,
 $$$""""
         @ser.itemToSerialize
@@ -63,7 +63,7 @@ $$$""""
 
                 @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodAfterWithoutResult(x);
+                @(Model.NameClassToSerialize) .InterceptInstanceMethodAfterWithoutResult(x);
                 
                 }
 
@@ -76,7 +76,7 @@ $$$""""
 
                 var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodAfterWithResult(x,data);
+                @(Model.NameClassToSerialize) .InterceptInstanceMethodAfterWithResult(x,data);
                 return data;
                 }
             </text>
@@ -84,11 +84,11 @@ $$$""""
 
         
             catch(System.Exception ex){
-        WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodException(x,ex);
+        @(Model.NameClassToSerialize) .InterceptInstanceMethodException(x,ex);
                 throw;
             }
             finally{
-        WIAD_DemoConsole.InterceptorMethodInstanceClass.InterceptInstanceMethodFinally(x);
+        @(Model.NameClassToSerialize) .InterceptInstanceMethodFinally(x);
             }
         
 }

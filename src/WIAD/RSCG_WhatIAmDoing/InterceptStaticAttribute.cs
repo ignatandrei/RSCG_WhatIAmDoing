@@ -26,7 +26,10 @@ public class DataFromInterceptStatic: IEquatable<DataFromInterceptStatic>
             }
         }
         TypesTo = TypesTo?.TrimEnd(',')??"";
+        FullNameClass = type.ToString();
     }
+    public string FullNameClass { get; set; } = "";
+
 
     public string TypesTo { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿namespace WIAD_DemoConsole;
 
 //[InterceptStatic("System.IO.File.*ts")]
-//[InterceptStatic("System.IO.File.*")]
+[InterceptStatic("System.IO.File.*")]
 [InterceptStatic("System.Console.*")]
-//[InterceptStatic("WIAD_DemoConsole.Fib.*")]
+[InterceptStatic("WIAD_DemoConsole.Fib.*")]
 internal class InterceptorMethodStatic
 {
     public InterceptorMethodStatic()
