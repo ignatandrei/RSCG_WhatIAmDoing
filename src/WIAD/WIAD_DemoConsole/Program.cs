@@ -9,3 +9,5 @@ if(File.Exists(nameFile))
 
 File.WriteAllText(nameFile, "Hello, World!");
 File.WriteAllText(nameFile, "Hello, World!",Encoding.ASCII);
+
+Console.WriteLine(WIAD_DemoConsole.Fib.Fibonaci(7));

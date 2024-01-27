@@ -261,6 +261,28 @@ public class GeneratorWIAD : IIncrementalGenerator
         if (node is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Name: { Identifier: { ValueText: var method } } } } m)
         {
             methodName = method;
+            var parent = m.Parent;
+            while (parent is not null && parent is not ClassDeclarationSyntax)
+            {
+                parent = parent.Parent;
+            }
+            if (parent == null)
+                return true;//in program.cs without declaration of a class
+            var cds = parent as ClassDeclarationSyntax;
+            if (cds is null)
+                return false;
+            var attr = cds.AttributeLists;
+            if(attr.Count == 0)
+                return true;//no intercept static attribute
+
+            var existsStatic =
+                 attr
+                 .SelectMany(it => it.Attributes)
+                 .Select(it => it.Name)
+                 .Any(it => it.ToFullString().Contains("InterceptStatic"));
+            if (existsStatic) //do not intercept the interceptor
+                return false;
+
             return true;
         }
         return false;

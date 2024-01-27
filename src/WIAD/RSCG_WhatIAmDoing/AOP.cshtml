@@ -32,7 +32,7 @@ System.Collections.Generic.Dictionary<string,string?> valValues = new (){
 
 @foreach(var val in ser.item.ValueArguments ){
     <text>
-   { "@val.Name", @(val.Name)  ?.ToString() } ,
+   { "@val.Name", @(val.Name) .ToString() } ,
         </text>
 }
 
