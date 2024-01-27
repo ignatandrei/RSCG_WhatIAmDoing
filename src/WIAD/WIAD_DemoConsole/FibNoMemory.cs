@@ -1,6 +1,6 @@
 ﻿
 namespace WIAD_DemoConsole;
-internal class Fib
+internal class FibNoMemory
 {
     public static int Fibonaci(int n)
     {
@@ -8,6 +8,8 @@ internal class Fib
         {
             throw new ArgumentException("must be positive", nameof(n));
         }
+        Console.WriteLine($"Calculating FIB for {n}");
+
         if (n == 0)
         {
             return 0;
@@ -16,7 +18,6 @@ internal class Fib
         {
             return 1;
         }
-        //return 10;
         return Fibonaci(n - 1) + Fibonaci(n - 2);
     }
 }
