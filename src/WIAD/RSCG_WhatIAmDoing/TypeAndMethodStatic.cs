@@ -36,9 +36,13 @@ public class TypeAndMethodStatic
     }
     public string TypeOfClass { get; set; } = string.Empty;
     public string MethodName { get; set; } = string.Empty;
+    
+    //[Newtonsoft.Json.JsonIgnore]
     public Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();
+    //[Newtonsoft.Json.JsonIgnore] 
     public Argument[] StringArguments { get; set; } = Array.Empty<Argument>();
 
+    public string Tag { get; set; }=string.Empty;
     //[IgnoreProperty]
     //public string FullName
     //{

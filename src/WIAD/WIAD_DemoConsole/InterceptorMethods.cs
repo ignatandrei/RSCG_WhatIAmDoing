@@ -21,37 +21,39 @@ internal class InterceptorMethodStatic
         var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodStatic>(typeAndMethodStatic);
         ArgumentNullException.ThrowIfNull(typeAndMethod);
         _cache.TryAdd(id, typeAndMethod);
-        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with following arguments");
+        var argsToBeTyped = "";
         if(valueValues.Count > 0)
         {
             var values=string.Join(";", valueValues.Select(static it => $"{it.Key}={it.Value}"));
-            Console.WriteLine($"value arguments {values}");
+            //Console.WriteLine($"value arguments {values}");
+            argsToBeTyped += values;
         }
 
         if (stringValues.Count > 0)
         {
             var values = string.Join(";", stringValues.Select(static it => $"{it.Key}={it.Value}"));
-            Console.WriteLine($"string arguments {values}");
+            //Console.WriteLine($"string arguments {values}");
+            argsToBeTyped += values;
         }
-
-        //Console.WriteLine($"please remember id {id}");
+        typeAndMethod.Tag = argsToBeTyped;
+        Console.WriteLine($"!!!!Calling {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with {argsToBeTyped} ");
         return id;
     }
     internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
 
-        Console.WriteLine($"After method " + _cache[id].MethodName);
+        //Console.WriteLine($"After method " + _cache[id].MethodName);
     }
     internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
     {
         
-        Console.WriteLine($"After method {_cache[id].MethodName} returning {result}");
+        Console.WriteLine($"After method {_cache[id].MethodName} with args {_cache[id].Tag} returning {result}");
     }
     internal static void InterceptStaticMethodException(string id,Exception ex)
     {
         if(_cache.TryGetValue(id, out var typeAndMethod))
         {
-            Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments ");
+            Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {typeAndMethod.Tag}");
 
         }
         else
@@ -62,7 +64,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodFinally(string id)
     {
         _cache.TryRemove(id, out var typeAndMethod);
-        Console.WriteLine($"Exit method {typeAndMethod?.MethodName} ");
+        //Console.WriteLine($"Exit method {typeAndMethod?.MethodName} with arguments {typeAndMethod?.Tag}");
 
     }
 
