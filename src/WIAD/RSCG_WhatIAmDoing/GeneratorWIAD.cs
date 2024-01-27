@@ -81,19 +81,16 @@ public class GeneratorWIAD : IIncrementalGenerator
     }
     private void ExecuteGenInstance(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) value)
     {
-        var AlltypesToIntercept = value
+        var types = value
     .Right.ToArray()
     .Select(it => it.TypeTo)
     .Distinct()
     .ToArray();
 
         ;
-        var types = AlltypesToIntercept
-            .SelectMany(it => it.Split(','))
-            .Select(it => it?.Trim())
-            .Where(it => !string.IsNullOrWhiteSpace(it))
-            .Select(it => it!)
-            .Distinct()
+        var typeAndmethods = value.Right.ToArray()
+            .Select(it =>new { it.TypeTo, methods = it.MethodsTo.Split(new char[1] { ',' },StringSplitOptions.RemoveEmptyEntries) })
+            .Where(it => it.methods.Length>0)
             .ToArray();
 
         if (types.Length == 0)
@@ -129,6 +126,30 @@ public class GeneratorWIAD : IIncrementalGenerator
         {
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
+        var methods = typeAndmethods
+        .Where(it => it.TypeTo == s)
+        .SelectMany(it => it.methods)
+        .Distinct()
+        .ToArray();
+        bool hasMethod = false;
+        foreach (var item in methods)
+        {
+            var regex = item;
+
+            var temp = Regex.IsMatch(methodName, regex);
+            if (temp)
+            {
+                hasMethod= true;
+                break;
+            }
+        }
+
+        if (!hasMethod)
+        {
+            return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
+        }
+
+
         var nameVar = "";
         if(instance is ILocalReferenceOperation localOp)
             nameVar = localOp.Local.Name;

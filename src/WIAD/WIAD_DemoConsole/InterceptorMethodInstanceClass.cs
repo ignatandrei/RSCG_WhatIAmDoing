@@ -1,13 +1,15 @@
 ﻿namespace WIAD_DemoConsole;
 
-[InterceptInstanceClass(typeof(Person),"*")]
+[InterceptInstanceClass(typeof(Person),"ame")]
+[InterceptInstanceClass(typeof(Person), "parat")]
+
 internal class InterceptorMethodInstanceClass
 {
     public InterceptorMethodInstanceClass()
     {
         
     }
-    static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new();
+    static ConcurrentDictionary<string, TypeAndMethodInstance> _cache = new();
     internal static string InterceptInstanceMethodBefore<T>(
         T instance,
         string typeAndMethodStatic,
@@ -17,7 +19,7 @@ internal class InterceptorMethodInstanceClass
     {
 
         var id = Guid.NewGuid().ToString();
-        var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodStatic>(typeAndMethodStatic);
+        var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodInstance>(typeAndMethodStatic);
         ArgumentNullException.ThrowIfNull(typeAndMethod);
         _cache.TryAdd(id, typeAndMethod);
         var argsToBeTyped = "";
