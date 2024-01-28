@@ -27,7 +27,7 @@ public class DataFromExposeClass : IEquatable<DataFromExposeClass>
             }
         }
         ApplyData ??= "ToString()";
-        FullNameClass = type.ToString();
+        FullNameClass ??= "";
     }
     public string FullNameClass { get; set; } = "";
     public string ApplyData { get; set; }

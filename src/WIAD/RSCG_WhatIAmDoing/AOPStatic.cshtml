@@ -53,7 +53,7 @@ System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
             @foreach (var exp in ser.item.ExposeArguments)
             {
                 <text>
-                    { "@exp.Name", @(exp.Name)  ?.ToString() } ,
+                    { "@exp.Name", @(exp.Name)  ?. @(TypeAndMethod.typesToExpose[exp.TypeArgument])  } ,
                 </text>
             }
             };//end exposeValues
@@ -63,7 +63,7 @@ System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
 $$$""""
     @ser.itemToSerialize
 """"
-,valValues , stringValues 
+            ,valValues , stringValues , expValues
 )
 ; 
 

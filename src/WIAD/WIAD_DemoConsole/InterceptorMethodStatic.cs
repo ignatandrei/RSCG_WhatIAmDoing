@@ -15,7 +15,8 @@ internal class InterceptorMethodStatic
     internal static string InterceptStaticMethodBefore(        
         string typeAndMethodStatic, 
         Dictionary<string,string?> valueValues, 
-        Dictionary<string, string?> stringValues  
+        Dictionary<string, string?> stringValues  ,
+        Dictionary<string, string?> exposeValues
         )
     {
         
@@ -38,6 +39,13 @@ internal class InterceptorMethodStatic
             //Console.WriteLine($"string arguments {values}");
             argsToBeTyped += values;
         }
+        if (exposeValues.Count > 0)
+        {
+            var values = string.Join(";", exposeValues.Select(static it => $"{it.Key}={it.Value}"));
+            //Console.WriteLine($"string arguments {values}");
+            argsToBeTyped += values;
+        }
+
         typeAndMethod.Tag = argsToBeTyped;
         string color = typeAndMethod.IsVoid ? "green" : "yellow";
         AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{argsToBeTyped}[/] ");

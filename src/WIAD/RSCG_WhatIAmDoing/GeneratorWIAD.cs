@@ -312,9 +312,11 @@ public class GeneratorWIAD : IIncrementalGenerator
         DataFromExposeClass[]? dataFromExposeClasses)
     {
         var multipleTypes = dataFromExposeClasses?
+            .Where(it=>!string.IsNullOrWhiteSpace( it.FullNameClass ))
             .GroupBy(it=> it.FullNameClass)
             .Where(it=>it.Count() > 1)
             .ToArray();
+
         if(multipleTypes?.Length > 0)
         {
             //TODO: make diagnostic

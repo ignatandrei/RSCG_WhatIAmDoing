@@ -43,14 +43,14 @@ public class TypeAndMethod
     {
         return source.Arguments
             .Where(it => !it.IsValueType)
-            .Where(it=> typesToExpose.ContainsKey(it.Name) )
+            .Where(it=> typesToExpose.ContainsKey(it.TypeArgument) )
             .ToArray();
     }
     private static Argument[] ValueArgs(TypeAndMethod source)
     {
         return source.Arguments.Where(it => it.IsValueType).ToArray();
     }
-    const string typeofString = "String";
+    const string typeofString = "string";
     internal static Dictionary<string, string> typesToExpose=[];
 
     private static Argument[] StringArgs(TypeAndMethod source)

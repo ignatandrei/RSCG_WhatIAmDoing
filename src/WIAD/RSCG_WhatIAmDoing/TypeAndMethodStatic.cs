@@ -15,6 +15,7 @@ public class TypeAndMethodStatic
         this.TypeOfClass = source.TypeOfClass;
         this.ValueArguments = source.ValueArguments;
         this.StringArguments =source.StringArguments;
+        this.ExposeArguments = source.ExposeArguments;
         this.IsVoid = source.IsVoid();
         //this.MeSer=System.Text.Json.JsonSerializer.Serialize("a");
         //this.MeSer = Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -37,9 +38,10 @@ public class TypeAndMethodStatic
     public string MethodName { get; set; } = string.Empty;
     
     //[Newtonsoft.Json.JsonIgnore]
-    internal Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();
+    internal Argument[] ValueArguments = Array.Empty<Argument>();
     //[Newtonsoft.Json.JsonIgnore] 
-    internal Argument[] StringArguments { get; set; } = Array.Empty<Argument>();
+    internal Argument[] StringArguments  = Array.Empty<Argument>();
+    internal Argument[] ExposeArguments = Array.Empty<Argument>();
     public bool IsVoid { get; set; }
     public string Tag { get; set; }=string.Empty;
 }
