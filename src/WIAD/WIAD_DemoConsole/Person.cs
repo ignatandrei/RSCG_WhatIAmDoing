@@ -26,4 +26,8 @@ public class Person
     {
         Console.WriteLine(this.FullNameWithSeparator("--->"));
     }
+    public string WithEncoding(Encoding encoding)
+    {
+        return encoding.GetString(encoding.GetBytes(FullName()));
+    }
 }

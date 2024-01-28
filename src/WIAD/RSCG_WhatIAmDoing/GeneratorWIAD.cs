@@ -111,13 +111,21 @@ public class GeneratorWIAD : IIncrementalGenerator
         ExecuteGenStaticData(spc, dataFromInterceptStatic, compilation, ops,classesToExpose);
     }
 
-    
-
     private void ExecuteGenInstance(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) value)
+    {
+        var dataFromInterceptClasses = value.Right.ToArray();
+        var compilation = value.Left.Left;
+        var operations = value.Left.Right.ToArray();
+        ExecuteGenInstanceData(spc, dataFromInterceptClasses, compilation, operations);
+    }
+    private void ExecuteGenInstanceData(SourceProductionContext spc,
+        DataFromInterceptClass[]? dataFromInterceptClasses,
+        Compilation compilation,
+        IOperation[]? operations)
     {
 
         var namesClassToIntercept =
-            value.Right.ToArray()
+            dataFromInterceptClasses
             .Select(it => it.FullNameClass)
             .Select(it => it?.Trim())
             .Where(it => !string.IsNullOrWhiteSpace(it))
@@ -137,14 +145,13 @@ public class GeneratorWIAD : IIncrementalGenerator
         var nameClassToIntercept = namesClassToIntercept[0];
 
 
-        var types = value
-    .Right.ToArray()
+        var types = dataFromInterceptClasses
     .Select(it => it.TypeTo)
     .Distinct()
     .ToArray();
 
         ;
-        var typeAndmethods = value.Right.ToArray()
+        var typeAndmethods = dataFromInterceptClasses
             .Select(it => new { it.TypeTo, methods = it.MethodsTo.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries) })
             .Where(it => it.methods.Length > 0)
             .ToArray();
@@ -152,10 +159,9 @@ public class GeneratorWIAD : IIncrementalGenerator
         if (types.Length == 0)
             return;
 
-        var compilation = value.Left.Left;
+        
 
-        var ops = value
-    .Left.Right
+        var ops = operations
     .Select(op =>
     {
         TryGetMapMethodName(op.Syntax, out var methodName);

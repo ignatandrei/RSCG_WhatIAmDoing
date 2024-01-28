@@ -17,6 +17,8 @@ File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
 
 //WriteLine("static");
 
-//var pers = new Person("Andrei", "Ignat");
+var pers = new Person("Andrei", "Ignat");
 //WriteLine(pers.FullName());
 //pers.WriteNameToConsole();
+
+Console.WriteLine(pers.WithEncoding(Encoding.ASCII));
