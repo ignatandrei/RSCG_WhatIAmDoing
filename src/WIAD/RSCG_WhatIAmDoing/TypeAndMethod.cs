@@ -28,7 +28,6 @@ public class TypeAndMethod
         TypeOfClass = TypeOfClass.TrimEnd('.');
         MethodInvocation = staticMethod;
         TypeReturn = typeReturn;
-
         NameOfVariable = "";
     }
     public bool InstanceIsNotNull { get; }
@@ -36,15 +35,24 @@ public class TypeAndMethod
     public string MethodInvocation { get; }
     public string TypeReturn { get; }
     public string NameOfVariable { get; set; }
+    internal Argument[] ExposeArguments  = Array.Empty<Argument>();
+    internal Argument[] ValueArguments = Array.Empty<Argument>();
+    internal Argument[] StringArguments  = Array.Empty<Argument>();
 
-    public Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();
-    public Argument[] StringArguments { get; set; } = Array.Empty<Argument>();
-
+    private static Argument[] ExposeArgs(TypeAndMethod source)
+    {
+        return source.Arguments
+            .Where(it => !it.IsValueType)
+            .Where(it=> typesToExpose.ContainsKey(it.Name) )
+            .ToArray();
+    }
     private static Argument[] ValueArgs(TypeAndMethod source)
     {
         return source.Arguments.Where(it => it.IsValueType).ToArray();
     }
     const string typeofString = "String";
+    internal static Dictionary<string, string> typesToExpose=[];
+
     private static Argument[] StringArgs(TypeAndMethod source)
     {
         return source.Arguments
@@ -183,6 +191,8 @@ public class TypeAndMethod
         Arguments = arguments;
         ValueArguments = ValueArgs(this);
         StringArguments = StringArgs(this);
+        ExposeArguments=ExposeArgs(this);
+
         //var x = "asd";
     }
     public Argument[] Arguments { get; private set; } = [];

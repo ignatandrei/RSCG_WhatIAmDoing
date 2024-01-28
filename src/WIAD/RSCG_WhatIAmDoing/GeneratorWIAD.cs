@@ -83,7 +83,8 @@ public class GeneratorWIAD : IIncrementalGenerator
             ;
         var compilationAndDataStatic
          = context.CompilationProvider.Combine(classesToIntercept.Collect())
-           .Combine(staticToIntercept);
+           .Combine(staticToIntercept)
+           .Combine(classToExpose);
         //.Combine(context.AdditionalTextsProvider.Collect());
 
         context.RegisterSourceOutput(compilationAndDataStatic,
@@ -101,13 +102,16 @@ public class GeneratorWIAD : IIncrementalGenerator
 
     }
 
-    private void ExecuteGenStatic(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value)
+    private void ExecuteGenStatic(SourceProductionContext spc, (((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromExposeClass> Right) value)
     {
-        var compilation = value.Left.Left;
-        var dataFromInterceptStatic = value.Right.ToArray();
-        var ops = value.Left.Right.ToArray();
-        ExecuteGenStaticData(spc,dataFromInterceptStatic, compilation, ops);
+        var compilation = value.Left.Left.Left;
+        var dataFromInterceptStatic = value.Left.Right.ToArray();
+        var ops= value.Left.Left.Right.ToArray();
+        var classesToExpose = value.Right.ToArray();
+        ExecuteGenStaticData(spc, dataFromInterceptStatic, compilation, ops,classesToExpose);
     }
+
+    
 
     private void ExecuteGenInstance(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) value)
     {
@@ -304,8 +308,24 @@ public class GeneratorWIAD : IIncrementalGenerator
     private void ExecuteGenStaticData(SourceProductionContext spc, 
         DataFromInterceptStatic[]? dataFromInterceptStatics,
         Compilation compilation,
-        IOperation[]? operations)
+        IOperation[]? operations,
+        DataFromExposeClass[]? dataFromExposeClasses)
     {
+        var multipleTypes = dataFromExposeClasses?
+            .GroupBy(it=> it.FullNameClass)
+            .Where(it=>it.Count() > 1)
+            .ToArray();
+        if(multipleTypes?.Length > 0)
+        {
+            //TODO: make diagnostic
+            return;
+        }
+        var typesToExpose = dataFromExposeClasses?
+            .ToDictionary(it => it.FullNameClass, it => it.ApplyData)
+            ??[];
+        
+        TypeAndMethod.typesToExpose= typesToExpose;
+
         var AlltypesToIntercept = dataFromInterceptStatics
     .Select(it => it.TypesTo)
     .Distinct()

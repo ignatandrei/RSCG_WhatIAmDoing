@@ -47,6 +47,18 @@ System.Collections.Generic.Dictionary<string,string?> stringValues = new() {
         }
 };//end stringValues
 
+        System.Collections.Generic.Dictionary<string,string?>
+            expValues = new() {
+
+            @foreach (var exp in ser.item.ExposeArguments)
+            {
+                <text>
+                    { "@exp.Name", @(exp.Name)  ?.ToString() } ,
+                </text>
+            }
+            };//end exposeValues
+
+
         var x=@(Model.NameClassToSerialize) .InterceptStaticMethodBefore(
 $$$""""
     @ser.itemToSerialize
