@@ -16,7 +16,8 @@ internal class InterceptorMethodInstanceClass
         T instance,
         string typeAndMethodStatic,
         Dictionary<string, string?> valueValues,
-        Dictionary<string, string?> stringValues
+        Dictionary<string, string?> stringValues,
+        Dictionary<string, string?> exposeValues
         )
     {
 
@@ -35,6 +36,12 @@ internal class InterceptorMethodInstanceClass
         if (stringValues.Count > 0)
         {
             var values = string.Join(";", stringValues.Select(static it => $"{it.Key}={it.Value}"));
+            //Console.WriteLine($"string arguments {values}");
+            argsToBeTyped += values;
+        }
+        if (exposeValues.Count > 0)
+        {
+            var values = string.Join(";", exposeValues.Select(static it => $"{it.Key}={it.Value}"));
             //Console.WriteLine($"string arguments {values}");
             argsToBeTyped += values;
         }
