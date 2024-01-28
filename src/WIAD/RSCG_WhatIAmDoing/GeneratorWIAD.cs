@@ -11,6 +11,14 @@ public class GeneratorWIAD : IIncrementalGenerator
         return syntaxNode is ClassDeclarationSyntax classDeclaration;
 
     }
+    private static DataFromExposeClass FindAttributeDataExposeClass(
+    GeneratorAttributeSyntaxContext context,
+    CancellationToken cancellationToken)
+    {
+        var type = (INamedTypeSymbol)context.TargetSymbol;
+        var dataInfo = new DataFromExposeClass(type);
+        return dataInfo;
+    }
     private static DataFromInterceptStatic FindAttributeDataStatic(
     GeneratorAttributeSyntaxContext context,
     CancellationToken cancellationToken)
@@ -30,16 +38,28 @@ public class GeneratorWIAD : IIncrementalGenerator
     }
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        //find attributes to intercept
+
+        var classToExpose = context.SyntaxProvider.ForAttributeWithMetadataName(
+    "RSCG_WhatIAmDoing.ExposeClassAttribute",
+    IsAppliedOnClass,
+    FindAttributeDataExposeClass
+    )
+     .Collect()
+    .SelectMany((data, _) => data.Distinct())
+    .Collect()
+;
+
         var staticToIntercept = context.SyntaxProvider.ForAttributeWithMetadataName(
-            "RSCG_WhatIAmDoing.InterceptStaticAttribute",
-            IsAppliedOnClass,
-            FindAttributeDataStatic
-            )
-             .Collect()
-            .SelectMany((data, _) => data.Distinct())
-            .Collect()
-        ;
+    "RSCG_WhatIAmDoing.InterceptStaticAttribute",
+    IsAppliedOnClass,
+    FindAttributeDataStatic
+    )
+     .Collect()
+    .SelectMany((data, _) => data.Distinct())
+    .Collect()
+;
+
+
 
         var instancesToIntercept = context.SyntaxProvider.ForAttributeWithMetadataName(
             "RSCG_WhatIAmDoing.InterceptInstanceClassAttribute",
@@ -111,8 +131,8 @@ public class GeneratorWIAD : IIncrementalGenerator
 
         ;
         var typeAndmethods = value.Right.ToArray()
-            .Select(it =>new { it.TypeTo, methods = it.MethodsTo.Split(new char[1] { ',' },StringSplitOptions.RemoveEmptyEntries) })
-            .Where(it => it.methods.Length>0)
+            .Select(it => new { it.TypeTo, methods = it.MethodsTo.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries) })
+            .Where(it => it.methods.Length > 0)
             .ToArray();
 
         if (types.Length == 0)
@@ -129,7 +149,7 @@ public class GeneratorWIAD : IIncrementalGenerator
         var invocation = op as IInvocationOperation;
         Argument[] arguments = [];
         IOperation? instance = invocation?.Instance as ILocalReferenceOperation;
-        if(instance == null)
+        if (instance == null)
         {
             instance = invocation?.Instance as IInstanceReferenceOperation;
         }
@@ -143,8 +163,8 @@ public class GeneratorWIAD : IIncrementalGenerator
         {
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
-        var s=typeOfClass.ToString();
-        if(!types.Contains(s))
+        var s = typeOfClass.ToString();
+        if (!types.Contains(s))
         {
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
@@ -161,7 +181,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             var temp = Regex.IsMatch(methodName, regex);
             if (temp)
             {
-                hasMethod= true;
+                hasMethod = true;
                 break;
             }
         }
@@ -173,7 +193,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
 
         var nameVar = "";
-        if(instance is ILocalReferenceOperation localOp)
+        if (instance is ILocalReferenceOperation localOp)
             nameVar = localOp.Local.Name;
 
         typeAndMethod = new TypeAndMethod(typeOfClass?.ToString() ?? "", methodName ?? "", typeReturn, nameVar);
@@ -236,8 +256,8 @@ public class GeneratorWIAD : IIncrementalGenerator
                 dataForEachIntercept.Path = lineSpan.Path;
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
                 int startMethod;
-                if(item.NameOfVariable.Length>0)
-                    startMethod = code.IndexOf(item.NameOfVariable + "." + item.MethodName + "(", startLinePosition.Character)+1;//dot
+                if (item.NameOfVariable.Length > 0)
+                    startMethod = code.IndexOf(item.NameOfVariable + "." + item.MethodName + "(", startLinePosition.Character) + 1;//dot
                 else
                     startMethod = code.IndexOf(item.MethodName + "(", startLinePosition.Character);
                 //dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
@@ -279,7 +299,7 @@ public class GeneratorWIAD : IIncrementalGenerator
     .Distinct()
     .ToArray();
         ;
-        var namesClassToIntercept = 
+        var namesClassToIntercept =
             value.Right.ToArray()
             .Select(it => it.FullNameClass)
             .Select(it => it?.Trim())
@@ -292,7 +312,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             //TODO: make diagnostic
             return;
         }
-        if (namesClassToIntercept.Length >1)
+        if (namesClassToIntercept.Length > 1)
         {
             //TODO: make diagnostic
             return;

@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace RSCG_WhatIAmDoing;
+﻿namespace RSCG_WhatIAmDoing;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class InterceptInstanceClassAttribute

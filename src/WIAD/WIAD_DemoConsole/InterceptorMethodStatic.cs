@@ -1,5 +1,6 @@
 ﻿namespace WIAD_DemoConsole;
 
+[ExposeClass(typeof(Encoding), nameof(Encoding.EncodingName))]
 //[InterceptStatic("System.IO.File.*ts")]
 [InterceptStatic("System.IO.File.*")]
 [InterceptStatic("System.Console.*")]
