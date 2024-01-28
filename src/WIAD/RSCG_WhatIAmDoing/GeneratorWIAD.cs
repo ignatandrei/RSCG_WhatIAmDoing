@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.Operations;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace RSCG_WhatIAmDoing;
 [Generator]
@@ -99,6 +100,15 @@ public class GeneratorWIAD : IIncrementalGenerator
            ExecuteGenInstance(spc, data!));
 
     }
+
+    private void ExecuteGenStatic(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value)
+    {
+        var compilation = value.Left.Left;
+        var dataFromInterceptStatic = value.Right.ToArray();
+        var ops = value.Left.Right.ToArray();
+        ExecuteGenStaticData(spc,dataFromInterceptStatic, compilation, ops);
+    }
+
     private void ExecuteGenInstance(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) value)
     {
 
@@ -291,16 +301,18 @@ public class GeneratorWIAD : IIncrementalGenerator
 
     }
 
-    private void ExecuteGenStatic(SourceProductionContext spc, ((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) value)
+    private void ExecuteGenStaticData(SourceProductionContext spc, 
+        DataFromInterceptStatic[]? dataFromInterceptStatics,
+        Compilation compilation,
+        IOperation[]? operations)
     {
-        var AlltypesToIntercept = value
-    .Right.ToArray()
+        var AlltypesToIntercept = dataFromInterceptStatics
     .Select(it => it.TypesTo)
     .Distinct()
     .ToArray();
         ;
         var namesClassToIntercept =
-            value.Right.ToArray()
+            dataFromInterceptStatics
             .Select(it => it.FullNameClass)
             .Select(it => it?.Trim())
             .Where(it => !string.IsNullOrWhiteSpace(it))
@@ -328,11 +340,7 @@ public class GeneratorWIAD : IIncrementalGenerator
 
         if (types.Length == 0)
             return;
-
-        var compilation = value.Left.Left;
-
-        var ops = value
-    .Left.Right
+        var ops = operations
     .Select(op =>
     {
         TryGetMapMethodName(op.Syntax, out var methodName);
