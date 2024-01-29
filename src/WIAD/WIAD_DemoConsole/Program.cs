@@ -10,15 +10,14 @@ string nameFile = "test.txt";
 //}
 
 //File.WriteAllText(nameFile, "Hello, World!");
-//TODO: add encoding  Encoding.ASCII.EncodingName to serialize and deserialize
-File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
+//File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
 //Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
 //Console.WriteLine(FibNoMemory.Fibonaci(7));
 
 //WriteLine("static");
 
 var pers = new Person("Andrei", "Ignat");
-//WriteLine(pers.FullName());
+WriteLine(pers.FullName());
 //pers.WriteNameToConsole();
-
-Console.WriteLine(pers.WithEncoding(Encoding.ASCII));
+Console.WriteLine(pers.FullNameWithSeparator("++++"));
+//Console.WriteLine(pers.WithEncoding(Encoding.ASCII));
