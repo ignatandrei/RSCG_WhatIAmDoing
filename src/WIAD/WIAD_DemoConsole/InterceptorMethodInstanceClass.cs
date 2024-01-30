@@ -1,4 +1,5 @@
-﻿namespace WIAD_DemoConsole;
+﻿using Microsoft.Extensions.Caching.Memory;
+namespace WIAD_DemoConsole;
 
 //[InterceptInstanceClass(typeof(Person),"ame")]
 //[InterceptInstanceClass(typeof(Person), "parat")]
@@ -7,73 +8,60 @@
 
 internal class InterceptorMethodInstanceClass
 {
+    
     public InterceptorMethodInstanceClass()
     {
         
     }
-    static ConcurrentDictionary<string, TypeAndMethodInstance> _cache = new();
+    static MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromSeconds(30));
+    
     internal static string InterceptInstanceMethodBefore<T>(
         T instance,
         string typeAndMethodStatic,
         Dictionary<string, string?> valueValues,
         Dictionary<string, string?> stringValues,
         Dictionary<string, string?> exposeValues
-        )
+            )
     {
 
         var id = Guid.NewGuid().ToString();
         var typeAndMethod = System.Text.Json.JsonSerializer.Deserialize<TypeAndMethodInstance>(typeAndMethodStatic);
-        ArgumentNullException.ThrowIfNull(typeAndMethod);
-        _cache.TryAdd(id, typeAndMethod);
-        var argsToBeTyped = "";
-        if (valueValues.Count > 0)
-        {
-            var values = string.Join(";", valueValues.Select(static it => $"{it.Key}={it.Value}"));
-            //Console.WriteLine($"value arguments {values}");
-            argsToBeTyped += values;
-        }
-
-        if (stringValues.Count > 0)
-        {
-            var values = string.Join(";", stringValues.Select(static it => $"{it.Key}={it.Value}"));
-            //Console.WriteLine($"string arguments {values}");
-            argsToBeTyped += values;
-        }
-        if (exposeValues.Count > 0)
-        {
-            var values = string.Join(";", exposeValues.Select(static it => $"{it.Key}={it.Value}"));
-            //Console.WriteLine($"string arguments {values}");
-            argsToBeTyped += values;
-        }
-        typeAndMethod.Tag = argsToBeTyped;
+        if (typeAndMethod == null) return id;
+        var mc=new MethodCalled(typeAndMethod,valueValues,stringValues,exposeValues);
+        Program.cacheMethodsHistory.Set(id, mc);
+        Program.MethodKeys.Add(id);
         string color = typeAndMethod.IsVoid ? "yellow" : "red";
-        AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{argsToBeTyped}[/] ");
+        AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{mc.ArgumentsAsString()}[/] ");        
         return id;
     }
     internal static void InterceptInstanceMethodAfterWithoutResult(string id)
     {
-        AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{_cache[id].MethodName}[/] with args {_cache[id].Tag} ");
+        var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        mc.State |= StateMethod.Finished;
+        var typeAndMethod =mc.typeAndMethodData;
+        AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
     }
     internal static void InterceptInstanceMethodAfterWithResult(string id, object? result)
     {
 
-        AnsiConsole.MarkupLineInterpolated($"end method [bold red]{_cache[id].MethodName}[/] with args {_cache[id].Tag} returning {result}");
+        var mc=Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        mc.State |= StateMethod.Finished;
+        var typeAndMethod = mc.typeAndMethodData;
+        AnsiConsole.MarkupLineInterpolated($"end method [bold red]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
     }
     internal static void InterceptInstanceMethodException(string id, Exception ex)
     {
-        if (_cache.TryGetValue(id, out var typeAndMethod))
-        {
-            Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {typeAndMethod.Tag}");
+        var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        mc.State |= StateMethod.RaiseException;
+        var typeAndMethod = mc.typeAndMethodData;
+        Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
 
-        }
-        else
-        {
-            Console.WriteLine($"strange the call to begin has not been intercepted ");
-        }
     }
     internal static void InterceptInstanceMethodFinally(string id)
     {
-        _cache.TryRemove(id, out var typeAndMethod);
+        var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        mc.State |= StateMethod.Finished;
         //Console.WriteLine($"Exit method {typeAndMethod?.MethodName} with arguments {typeAndMethod?.Tag}");
 
     }

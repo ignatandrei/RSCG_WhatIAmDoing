@@ -1,6 +1,6 @@
 ﻿namespace RSCG_WhatIAmDoing;
 
-public class TypeAndMethodInstance
+public class TypeAndMethodInstance: TypeAndMethodData 
 {
     public TypeAndMethodInstance()
     {
@@ -31,8 +31,6 @@ public class TypeAndMethodInstance
             throw new ArgumentException("NOT IsValid");
 
     }
-    public string TypeOfClass { get; set; } = string.Empty;
-    public string MethodName { get; set; } = string.Empty;
     
     //[Newtonsoft.Json.JsonIgnore]
     internal Argument[] ValueArguments { get; set; } = Array.Empty<Argument>();

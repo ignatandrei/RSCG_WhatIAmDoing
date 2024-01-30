@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System.Text;
 using WIAD_DemoConsole;
 using static System.Console;
+
 
 //Console.WriteLine("Heasdasdallo, World!");
 string nameFile = "test.txt";
@@ -21,3 +23,38 @@ WriteLine(pers.FullName());
 //pers.WriteNameToConsole();
 Console.WriteLine(pers.FullNameWithSeparator("++++"));
 //Console.WriteLine(pers.WithEncoding(Encoding.ASCII));
+Console.WriteLine("Press enter to see the history");
+Console.ReadLine();
+List<MethodCalled> list = new List<MethodCalled>();
+var data= MethodKeys.Select(x =>
+{
+    try
+    {
+        return (MethodCalled?)Program.cacheMethodsHistory.Get<MethodCalled>(x);
+    }
+    catch (Exception)
+    {
+        return null;
+    }
+}
+)
+    .Where(it => it!=null)
+    .Select(it => it!)
+    .OrderBy(it => it.StartedAtDate)
+    .ToArray();
+;
+
+foreach (var item in data)
+{
+    WriteLine($"Method {item.typeAndMethodData.MethodName} from class {item.typeAndMethodData.MethodName} with state {item.State} at {item.StartedAtDate} ");
+    WriteLine($"  =>Arguments: {item.ArgumentsAsString()}");
+}
+
+//foreach (var item in Program.cacheMethodsHistory)
+public partial class Program
+{
+    public static IMemoryCache cacheMethodsHistory = new MemoryCache(new MemoryCacheOptions());
+    public static ConcurrentBag<string> MethodKeys= new ConcurrentBag<string>();
+
+
+}

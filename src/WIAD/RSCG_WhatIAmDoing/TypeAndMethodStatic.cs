@@ -1,6 +1,6 @@
 ﻿namespace RSCG_WhatIAmDoing;
 
-public class TypeAndMethodStatic
+public class TypeAndMethodStatic: TypeAndMethodData
 {
     public TypeAndMethodStatic()
     {
@@ -34,8 +34,6 @@ public class TypeAndMethodStatic
             throw new ArgumentException("NOT IsValid");
 
     }
-    public string TypeOfClass { get; set; } = string.Empty;
-    public string MethodName { get; set; } = string.Empty;
     
     //[Newtonsoft.Json.JsonIgnore]
     internal Argument[] ValueArguments = Array.Empty<Argument>();
