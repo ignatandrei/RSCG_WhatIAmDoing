@@ -8,7 +8,7 @@ public class MethodCalled
 
     public readonly DateTime StartedAtDate;
     public DateTime? FinishedAtDate { get; set; }
-    public StateMethod State { get; set; }
+    public AccumulatedStateMethod State { get; set; }
     public MethodCalled(TypeAndMethodData typeAndMethodData, 
         Dictionary<string, string?> valueValues,
         Dictionary<string, string?> stringValues,
@@ -16,7 +16,7 @@ public class MethodCalled
     )
     {
         StartedAtDate = DateTime.UtcNow;
-        State = StateMethod.Started;
+        State = AccumulatedStateMethod.Started;
         this.typeAndMethodData = typeAndMethodData;
         this.valueValues = valueValues;
         this.stringValues = stringValues;

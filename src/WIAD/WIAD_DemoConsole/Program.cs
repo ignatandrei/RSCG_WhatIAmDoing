@@ -6,15 +6,15 @@ using static System.Console;
 
 //Console.WriteLine("Heasdasdallo, World!");
 string nameFile = "test.txt";
-//if (File.Exists(nameFile))
-//{
-//    File.Delete(nameFile);
-//}
+if (File.Exists(nameFile))
+{
+    File.Delete(nameFile);
+}
 
-//File.WriteAllText(nameFile, "Hello, World!");
-//File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
-//Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
-//Console.WriteLine(FibNoMemory.Fibonaci(7));
+File.WriteAllText(nameFile, "Hello, World!");
+File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
+Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
+Console.WriteLine(FibNoMemory.Fibonaci(7));
 
 //WriteLine("static");
 
@@ -46,7 +46,7 @@ var data= MethodKeys.Select(x =>
 
 foreach (var item in data)
 {
-    WriteLine($"Method {item.typeAndMethodData.MethodName} from class {item.typeAndMethodData.MethodName} with state {item.State} at {item.StartedAtDate} ");
+    WriteLine($"Method {item.typeAndMethodData.MethodName} from class {item.typeAndMethodData.TypeOfClass} Time: {item.StartedAtDate} state {item.State} ");
     WriteLine($"  =>Arguments: {item.ArgumentsAsString()}");
 }
 
