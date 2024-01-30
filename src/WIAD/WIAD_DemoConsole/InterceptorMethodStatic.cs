@@ -36,6 +36,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodAfterWithoutResult(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if(mc == null) return;  
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod = mc.typeAndMethodData;
 
@@ -44,6 +45,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodAfterWithResult(string id , object? result)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return; 
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod = mc.typeAndMethodData;
 
@@ -52,6 +54,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodException(string id,Exception ex)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return; 
         mc.State |= AccumulatedStateMethod.RaiseException;
         var typeAndMethod = mc.typeAndMethodData;
 
@@ -60,6 +63,7 @@ internal class InterceptorMethodStatic
     internal static void InterceptStaticMethodFinally(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return; 
         mc.State |= AccumulatedStateMethod.Finished;
 
     }

@@ -38,6 +38,7 @@ internal class InterceptorMethodInstanceClass
     internal static void InterceptInstanceMethodAfterWithoutResult(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return;
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod =mc.typeAndMethodData;
         AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
@@ -46,6 +47,7 @@ internal class InterceptorMethodInstanceClass
     {
 
         var mc=Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return;
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod = mc.typeAndMethodData;
         AnsiConsole.MarkupLineInterpolated($"end method [bold red]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
@@ -53,6 +55,7 @@ internal class InterceptorMethodInstanceClass
     internal static void InterceptInstanceMethodException(string id, Exception ex)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return;
         mc.State |= AccumulatedStateMethod.RaiseException;
         var typeAndMethod = mc.typeAndMethodData;
         Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
@@ -61,6 +64,7 @@ internal class InterceptorMethodInstanceClass
     internal static void InterceptInstanceMethodFinally(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return;
         mc.State |= AccumulatedStateMethod.Finished;
         //Console.WriteLine($"Exit method {typeAndMethod?.MethodName} with arguments {typeAndMethod?.Tag}");
 
