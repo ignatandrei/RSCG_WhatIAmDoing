@@ -32,8 +32,8 @@
 
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Scriban" Version="5.9.0" GeneratePathProperty="true" PrivateAssets="all" />
-		<None Include="$(PkgScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<!--<PackageReference Include="Scriban" Version="5.9.0" GeneratePathProperty="true" PrivateAssets="all" />-->
+		<!--<None Include="$(PkgScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
 
 		<PackageReference Include="System.Text.Json" Version="8.0.1" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" PrivateAssets="all" />
@@ -51,7 +51,7 @@
 
 	<Target Name="GetDependencyTargetPaths">
 		<ItemGroup>
-			<TargetPathWithTargetPlatformMoniker Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" IncludeRuntimeDependency="false" />
+			<!--<TargetPathWithTargetPlatformMoniker Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" IncludeRuntimeDependency="false" />-->
 			<TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll" IncludeRuntimeDependency="false" />
 		</ItemGroup>
@@ -72,15 +72,52 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="MinVer">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 
 		<None Include="../../../README.md" Pack="true" PackagePath="\" />
 		<None Include="../../../readme.txt">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
+		
+		
 	</ItemGroup>
+	<PropertyGroup>
+		<Description>What I Am Doing - see what your software is doing. Add also RSCG_WhatIAmDoing_Common</Description>
+		<Copyright>MIT</Copyright>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd))</CurrentDate>
+		<Authors>Andrei Ignat</Authors>
+		<Title>A C# source-generated class library for see what your software is doing.</Title>
+		<PackageId>RSCG_WhatIAmDoing</PackageId>
+		<PackageTags>dotnet;dotnetcore;csharp;generators;sourcegen;roslyn;WIAD</PackageTags>
+		<PackageProjectUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</PackageProjectUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<NoWarn>NU5125;NU5039</NoWarn>
+		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
+		<RepositoryUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryType>git</RepositoryType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>		
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IsPackable>true</IsPackable>
+		<!--<PackageIcon>logo.png</PackageIcon>-->
+	</PropertyGroup>
+
+
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<SourceLinkCreate>true</SourceLinkCreate>
+		<SourceLinkOriginUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</SourceLinkOriginUrl>
+
 	</PropertyGroup>
 
 </Project>
