@@ -117,8 +117,7 @@
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SourceLinkCreate>true</SourceLinkCreate>
-		<SourceLinkOriginUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</SourceLinkOriginUrl>
-		
+		<SourceLinkOriginUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</SourceLinkOriginUrl>		
 	</PropertyGroup>
 
 </Project>
