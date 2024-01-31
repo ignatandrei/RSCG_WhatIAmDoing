@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WIAD_DemoConsole", "WIAD_De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSCG_WhatIAmDoing", "RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj", "{2D03A71C-604F-43E8-8B13-9204B104080E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSCG_WhatIAmDoing_Common", "RSCG_WhatIAmDoing_Common\RSCG_WhatIAmDoing_Common.csproj", "{15648E1F-6A6D-4456-A84A-DDD6DE6B0247}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2D03A71C-604F-43E8-8B13-9204B104080E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D03A71C-604F-43E8-8B13-9204B104080E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D03A71C-604F-43E8-8B13-9204B104080E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15648E1F-6A6D-4456-A84A-DDD6DE6B0247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15648E1F-6A6D-4456-A84A-DDD6DE6B0247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15648E1F-6A6D-4456-A84A-DDD6DE6B0247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15648E1F-6A6D-4456-A84A-DDD6DE6B0247}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,7 @@ internal class FibMemory
         if(data.ContainsKey(n))
             return data[n];
         
-        Console.WriteLine($"I am starting to calculate for {n}");
+        //Console.WriteLine($"I am starting to calculate for {n}");
         if (n < 0)
         {
             throw new ArgumentException("must be positive", nameof(n));

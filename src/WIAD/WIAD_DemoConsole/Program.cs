@@ -38,9 +38,9 @@ var data= MethodKeys.Select(x =>
     }
 }
 )
-    .Where(it => it!=null)
+       .Where(it => it!=null)
     .Select(it => it!)
-    .OrderBy(it => it.StartedAtDate)
+    .OrderBy(it => it.StartedAtTicks)
     .ToArray();
 ;
 

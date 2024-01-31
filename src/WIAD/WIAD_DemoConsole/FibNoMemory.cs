@@ -8,7 +8,7 @@ internal class FibNoMemory
         {
             throw new ArgumentException("must be positive", nameof(n));
         }
-        Console.WriteLine($"I am starting to calculate for {n}");
+        //Console.WriteLine($"I am starting to calculate for {n}");
 
         if (n == 0)
         {

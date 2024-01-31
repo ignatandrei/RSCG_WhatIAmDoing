@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using RSCG_WhatIAmDoing_Common;
 namespace WIAD_DemoConsole;
 
 //[InterceptInstanceClass(typeof(Person),"ame")]
@@ -6,17 +7,17 @@ namespace WIAD_DemoConsole;
 //[InterceptInstanceClass(typeof(Person), "ncodi")]
 [InterceptInstanceClass(typeof(Person), ".*")]
 
-internal class InterceptorMethodInstanceClass
+public class InterceptorMethodInstanceClass: IInterceptorMethodInstanceClass
 {
     
     public InterceptorMethodInstanceClass()
     {
         
     }
-    static MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromSeconds(30));
+    //static MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
+    //        .SetSlidingExpiration(TimeSpan.FromSeconds(30));
     
-    internal static string InterceptInstanceMethodBefore<T>(
+    public static string InterceptInstanceMethodBefore<T>(
         T instance,
         string typeAndMethodStatic,
         Dictionary<string, string?> valueValues,
@@ -32,27 +33,27 @@ internal class InterceptorMethodInstanceClass
         Program.cacheMethodsHistory.Set(id, mc);
         Program.MethodKeys.Add(id);
         string color = typeAndMethod.IsVoid ? "yellow" : "red";
-        AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{mc.ArgumentsAsString()}[/] ");        
+        //AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{mc.ArgumentsAsString()}[/] ");        
         return id;
     }
-    internal static void InterceptInstanceMethodAfterWithoutResult(string id)
+    public static void InterceptInstanceMethodAfterWithoutResult(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod =mc.typeAndMethodData;
-        AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
+        ////AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
     }
-    internal static void InterceptInstanceMethodAfterWithResult(string id, object? result)
+    public static void InterceptInstanceMethodAfterWithResult(string id, object? result)
     {
 
         var mc=Program.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.State |= AccumulatedStateMethod.Finished;
         var typeAndMethod = mc.typeAndMethodData;
-        AnsiConsole.MarkupLineInterpolated($"end method [bold red]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
+        //AnsiConsole.MarkupLineInterpolated($"end method [bold red]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
     }
-    internal static void InterceptInstanceMethodException(string id, Exception ex)
+    public static void InterceptInstanceMethodException(string id, Exception ex)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
@@ -61,7 +62,7 @@ internal class InterceptorMethodInstanceClass
         Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
 
     }
-    internal static void InterceptInstanceMethodFinally(string id)
+    public static void InterceptInstanceMethodFinally(string id)
     {
         var mc = Program.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
