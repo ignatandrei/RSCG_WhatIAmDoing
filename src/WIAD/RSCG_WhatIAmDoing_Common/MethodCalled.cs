@@ -1,31 +1,36 @@
-﻿using RSCG_WhatIAmDoing;
-
-namespace RSCG_WhatIAmDoing_Common;
-public class MethodCalled
-{
-    public readonly TypeAndMethodData typeAndMethodData;
-    public readonly Dictionary<string, string?> valueValues;
-    public readonly Dictionary<string, string?> stringValues;
-    public readonly Dictionary<string, string?> exposeValues;
-
-    public readonly DateTime StartedAtDate;
-    public readonly long StartedAtTicks;
-    public DateTime? FinishedAtDate { get; set; }
-    public AccumulatedStateMethod State { get; set; }
-    public MethodCalled(TypeAndMethodData typeAndMethodData, 
-        Dictionary<string, string?> valueValues,
-        Dictionary<string, string?> stringValues,
-        Dictionary<string, string?> exposeValues
+﻿namespace RSCG_WhatIAmDoing_Common;
+public class MethodCalled(TypeAndMethodData typeAndMethodData,
+    Dictionary<string, string?> valueValues,
+    Dictionary<string, string?> stringValues,
+    Dictionary<string, string?> exposeValues
     )
+{
+    public readonly TypeAndMethodData typeAndMethodData = typeAndMethodData;
+    public readonly Dictionary<string, string?> valueValues = valueValues;
+    public readonly Dictionary<string, string?> stringValues = stringValues;
+    public readonly Dictionary<string, string?> exposeValues = exposeValues;
+
+    public readonly DateTime StartedAtDate = DateTime.UtcNow;
+    public readonly long StartedAtTicks = Environment.TickCount64;
+    public DateTime? FinishedAtDate { get; set; }
+    public long? EndAtTicks { get; private set; }
+    public AccumulatedStateMethod State { get; private set; } = AccumulatedStateMethod.Started;
+    public void SetFinished()
     {
-        StartedAtDate = DateTime.UtcNow;
-        StartedAtTicks = DateTime.UtcNow.Ticks;
-        State = AccumulatedStateMethod.Started;
-        this.typeAndMethodData = typeAndMethodData;
-        this.valueValues = valueValues;
-        this.stringValues = stringValues;
-        this.exposeValues = exposeValues;
+        FinishedAtDate = DateTime.UtcNow;
+        State |= AccumulatedStateMethod.Finished;
+        EndAtTicks = Environment.TickCount64;
+
     }
+    public Exception Exception { get; private set; }
+    public void SetException(Exception ex)
+    {
+
+        State |= AccumulatedStateMethod.RaiseException;
+        this.Exception = ex;
+
+    }
+
     public string ArgumentsAsString()
     {
         var argsToBeTyped= "";
@@ -49,5 +54,11 @@ public class MethodCalled
             argsToBeTyped += values;
         }
         return argsToBeTyped;
+    }
+    public object? Result { get; private set; }
+    internal void SetResult(object? result)
+    {
+        State |= AccumulatedStateMethod.HasResult;
+        Result = result;
     }
 }

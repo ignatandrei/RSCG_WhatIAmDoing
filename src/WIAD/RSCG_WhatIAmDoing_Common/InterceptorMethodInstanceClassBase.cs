@@ -1,13 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using RSCG_WhatIAmDoing;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RSCG_WhatIAmDoing_Common;
+﻿namespace RSCG_WhatIAmDoing_Common;
 
 public class CachingData
 {
@@ -57,18 +48,14 @@ public class InterceptorMethodInstanceClassBase : IInterceptorMethodInstanceClas
     }
     public static void InterceptMethodAfterWithoutResult(string id)
     {
-        var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
-        if (mc == null) return;
-        mc.State |= AccumulatedStateMethod.Finished;
-        var typeAndMethod = mc.typeAndMethodData;
-        ////AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
+        //AnsiConsole.MarkupLineInterpolated($"finish method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} ");
     }
     public static void InterceptMethodAfterWithResult(string id, object? result)
     {
 
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
-        mc.State |= AccumulatedStateMethod.Finished;
+        mc.SetResult(result);
         var typeAndMethod = mc.typeAndMethodData;
         //AnsiConsole.MarkupLineInterpolated($"end method [bold red]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
     }
@@ -76,16 +63,15 @@ public class InterceptorMethodInstanceClassBase : IInterceptorMethodInstanceClas
     {
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
-        mc.State |= AccumulatedStateMethod.RaiseException;
-        var typeAndMethod = mc.typeAndMethodData;
-        Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
+        mc.SetException(ex);
+        //Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
 
     }
     public static void InterceptMethodFinally(string id)
     {   
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
-        mc.State |= AccumulatedStateMethod.Finished;
+        mc.SetFinished();
         //Console.WriteLine($"Exit method {typeAndMethod?.MethodName} with arguments {typeAndMethod?.Tag}");
 
     }
