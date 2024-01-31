@@ -81,8 +81,9 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-		
-		
+		<None Include="../../../LICENSE" Pack="true" PackagePath="\" />
+
+
 	</ItemGroup>
 	<PropertyGroup>
 		<Description>What I Am Doing - see what your software is doing. Add also RSCG_WhatIAmDoing_Common</Description>
@@ -91,7 +92,6 @@
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd))</CurrentDate>
 		<Authors>Andrei Ignat</Authors>
 		<Title>A C# source-generated class library for see what your software is doing.</Title>
-		<PackageId>RSCG_WhatIAmDoing</PackageId>
 		<PackageTags>dotnet;dotnetcore;csharp;generators;sourcegen;roslyn;WIAD</PackageTags>
 		<PackageProjectUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</PackageProjectUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -100,7 +100,9 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>
 		<NoWarn>NU5125;NU5039</NoWarn>
-		<Version>8.2023.131.2001</Version>
+		<!--<Version>8.2023.131.2001</Version>-->
+		<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>
+
 		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
 		<RepositoryUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</RepositoryUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>

@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "build": "dotnet build --configuration Release",
+    "test": "dotnet test --configuration Release",
+    "pack": "dotnet pack"
+  }
+}

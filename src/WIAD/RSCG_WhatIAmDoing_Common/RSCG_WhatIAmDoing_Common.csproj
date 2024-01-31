@@ -12,4 +12,50 @@
 		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" ReferenceOutputAssembly="true" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<None Include="../../../README.md" Pack="true" PackagePath="\" />
+		<None Include="../../../readme.txt">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="../../../LICENSE" Pack="true" PackagePath="\" />
+
+
+	</ItemGroup>
+	<PropertyGroup>
+		<Description>What I Am Doing - see what your software is doing. Add also RSCG_WhatIAmDoing_Common</Description>
+		<Copyright>MIT</Copyright>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd))</CurrentDate>
+		<Authors>Andrei Ignat</Authors>
+		<Title>A C# source-generated class library for see what your software is doing.</Title>
+		<PackageTags>dotnet;dotnetcore;csharp;generators;sourcegen;roslyn;WIAD</PackageTags>
+		<PackageProjectUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</PackageProjectUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<NoWarn>NU5125;NU5039</NoWarn>
+		<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>
+		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
+		<RepositoryUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryType>git</RepositoryType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>		
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IsPackable>true</IsPackable>
+		<!--<Version>8.2023.1131.11950</Version>-->
+		<!--<PackageIcon>logo.png</PackageIcon>-->
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<SourceLinkCreate>true</SourceLinkCreate>
+		<SourceLinkOriginUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</SourceLinkOriginUrl>		
+	</PropertyGroup>
+
 </Project>
