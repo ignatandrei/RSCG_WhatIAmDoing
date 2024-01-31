@@ -5,5 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" ReferenceOutputAssembly="true" />
+	</ItemGroup>
 
 </Project>

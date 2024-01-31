@@ -1,4 +1,6 @@
-﻿namespace WIAD_DemoConsole;
+﻿using RSCG_WhatIAmDoing;
+
+namespace RSCG_WhatIAmDoing_Common;
 public class MethodCalled
 {
     public readonly TypeAndMethodData typeAndMethodData;

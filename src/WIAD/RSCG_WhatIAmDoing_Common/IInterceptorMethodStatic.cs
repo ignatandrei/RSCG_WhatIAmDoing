@@ -1,6 +1,13 @@
 ﻿namespace RSCG_WhatIAmDoing_Common;
+public interface IInterceptorMethodAfter
+{
+    abstract static void InterceptMethodAfterWithoutResult(string id);
+    abstract static void InterceptMethodAfterWithResult(string id, object? result);
+    abstract static void InterceptMethodException(string id, Exception ex);
+    abstract static void InterceptMethodFinally(string id);
 
-public interface IInterceptorMethodStatic
+}
+public interface IInterceptorMethodStatic: IInterceptorMethodAfter
 {
     abstract static string InterceptStaticMethodBefore(
         string typeAndMethodStatic,
@@ -8,12 +15,8 @@ public interface IInterceptorMethodStatic
         Dictionary<string, string?> stringValues,
         Dictionary<string, string?> exposeValues
         );
-    abstract static void InterceptStaticMethodAfterWithoutResult(string id);
-    abstract static void InterceptStaticMethodAfterWithResult(string id, object? result);
-    abstract static void InterceptStaticMethodException(string id, Exception ex);
-    abstract static void InterceptStaticMethodFinally(string id);
 }
-public interface IInterceptorMethodInstanceClass
+public interface IInterceptorMethodInstanceClass: IInterceptorMethodAfter
 {
     abstract static string InterceptInstanceMethodBefore<T>(
         T instance,
@@ -22,9 +25,5 @@ public interface IInterceptorMethodInstanceClass
         Dictionary<string, string?> stringValues,
         Dictionary<string, string?> exposeValues
             );
-    abstract static void InterceptInstanceMethodAfterWithoutResult(string id);
-    abstract static void InterceptInstanceMethodAfterWithResult(string id, object? result);
-    abstract static void InterceptInstanceMethodException(string id, Exception ex);
-
-    abstract static void InterceptInstanceMethodFinally(string id);
+    
 }

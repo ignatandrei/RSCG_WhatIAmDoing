@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using RSCG_WhatIAmDoing_Common;
 using System.Text;
 using WIAD_DemoConsole;
 using static System.Console;
@@ -26,23 +27,7 @@ Console.WriteLine(pers.FullNameWithSeparator("++++"));
 Console.WriteLine("Press enter to see the history");
 Console.ReadLine();
 List<MethodCalled> list = new List<MethodCalled>();
-var data= MethodKeys.Select(x =>
-{
-    try
-    {
-        return (MethodCalled?)Program.cacheMethodsHistory.Get<MethodCalled>(x);
-    }
-    catch (Exception)
-    {
-        return null;
-    }
-}
-)
-       .Where(it => it!=null)
-    .Select(it => it!)
-    .OrderBy(it => it.StartedAtTicks)
-    .ToArray();
-;
+var data= CachingData.Methods().ToArray();
 
 foreach (var item in data)
 {

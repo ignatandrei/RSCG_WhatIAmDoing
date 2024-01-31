@@ -1,4 +1,4 @@
-﻿namespace WIAD_DemoConsole;
+﻿namespace RSCG_WhatIAmDoing_Common;
 
 [Flags]
 public enum AccumulatedStateMethod

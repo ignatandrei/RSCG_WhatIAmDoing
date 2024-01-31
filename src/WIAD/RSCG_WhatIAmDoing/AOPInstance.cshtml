@@ -74,7 +74,7 @@ $$$""""
 
                 @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                @(Model.NameClassToSerialize) .InterceptInstanceMethodAfterWithoutResult(x);
+                @(Model.NameClassToSerialize) .InterceptMethodAfterWithoutResult(x);
                 
                 }
 
@@ -87,7 +87,7 @@ $$$""""
 
                 var data= @(ser.item.HasTaskReturnType ? "await" : "") @ser.item.CallMethod;
 
-                @(Model.NameClassToSerialize) .InterceptInstanceMethodAfterWithResult(x,data);
+                @(Model.NameClassToSerialize) .InterceptMethodAfterWithResult(x,data);
                 return data;
                 }
             </text>
@@ -95,11 +95,11 @@ $$$""""
 
         
             catch(System.Exception ex){
-        @(Model.NameClassToSerialize) .InterceptInstanceMethodException(x,ex);
+        @(Model.NameClassToSerialize) .InterceptMethodException(x,ex);
                 throw;
             }
             finally{
-        @(Model.NameClassToSerialize) .InterceptInstanceMethodFinally(x);
+        @(Model.NameClassToSerialize) .InterceptMethodFinally(x);
             }
         
 }
