@@ -22,6 +22,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="MinVer" Version="5.0.0-beta.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
 		<PackageReference Include="System.CodeDom" PrivateAssets="all" GeneratePathProperty="true" Version="7.0.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
 		<None Remove="AOPInstance.cshtml" />
@@ -72,11 +77,6 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-		<PackageReference Include="MinVer">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-
 		<None Include="../../../README.md" Pack="true" PackagePath="\" />
 		<None Include="../../../readme.txt">
 			<Pack>True</Pack>
@@ -109,6 +109,7 @@
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>		
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<IsPackable>true</IsPackable>
+		<!--<Version>8.2023.1131.11950</Version>-->
 		<!--<PackageIcon>logo.png</PackageIcon>-->
 	</PropertyGroup>
 
@@ -117,7 +118,7 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<SourceLinkCreate>true</SourceLinkCreate>
 		<SourceLinkOriginUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</SourceLinkOriginUrl>
-
+		
 	</PropertyGroup>
 
 </Project>
