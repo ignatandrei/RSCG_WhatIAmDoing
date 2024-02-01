@@ -44,9 +44,10 @@ public class InterceptorMethodStaticBase : IInterceptorMethodStatic
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.SetException(ex);
-        //var typeAndMethod = mc.typeAndMethodData;
-
-        //Console.WriteLine($"Exception method {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
+        
+        var typeAndMethod = mc.typeAndMethodData;
+        
+        Console.WriteLine($"!!!Exception method {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
     }
     public static void InterceptMethodFinally(string id)
     {

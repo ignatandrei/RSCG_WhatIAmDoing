@@ -16,7 +16,14 @@ File.WriteAllText(nameFile, "Hello, World!");
 File.WriteAllText(nameFile, "Hello, World!", Encoding.ASCII);
 Console.WriteLine(WIAD_DemoConsole.FibMemory.Fibonaci(7));
 Console.WriteLine(FibNoMemory.Fibonaci(7));
-
+try
+{
+    File.WriteAllText("A:\a.txt", "asdasd");
+}
+catch(Exception ex)
+{
+    Console.WriteLine("there was an error "+ex.Message);
+}
 //WriteLine("static");
 
 var pers = new Person("Andrei", "Ignat");
