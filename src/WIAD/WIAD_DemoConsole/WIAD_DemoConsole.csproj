@@ -24,6 +24,11 @@
 	  <PackageReference Include="Spectre.Console" Version="0.48.0" />
 	</ItemGroup>
 
+	<!--<ItemGroup>
+	  <PackageReference Include="RSCG_WhatIAmDoing" Version="8.2024.10201.735" OutputItemType="Analyzer" ReferenceOutputAssembly="true"  />
+	  <PackageReference Include="RSCG_WhatIAmDoing_Common" Version="8.2024.10201.735" />
+	</ItemGroup>-->
+
 	<ItemGroup>
 		<ProjectReference Include="..\RSCG_WhatIAmDoing\RSCG_WhatIAmDoing.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 		<ProjectReference Include="..\RSCG_WhatIAmDoing_Common\RSCG_WhatIAmDoing_Common.csproj" />
