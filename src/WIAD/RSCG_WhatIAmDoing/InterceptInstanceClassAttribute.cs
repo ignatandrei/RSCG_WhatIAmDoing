@@ -13,24 +13,31 @@ public class InterceptInstanceClassAttribute
         this.typeTo = type.FullName;
     }
 }
+[DebuggerDisplay("{TypeTo}.{MethodsTo}")]
 public class DataFromInterceptClass : IEquatable<DataFromInterceptClass>
 {
-    public DataFromInterceptClass(INamedTypeSymbol type)
+    public static DataFromInterceptClass[] GetFromClass(INamedTypeSymbol type)
     {
+        var result = new List<DataFromInterceptClass>();
         var attr = type.GetAttributes();
         foreach (var item in attr)
         {
             if (item.AttributeClass?.ToDisplayString() == "RSCG_WhatIAmDoing.InterceptInstanceClassAttribute")
             {
-                TypeTo = item.ConstructorArguments[0].Value?.ToString() ?? "";
-                
-                MethodsTo += item.ConstructorArguments[1].Value?.ToString() ?? "";
-                MethodsTo += ",";
+                string TypeTo = item.ConstructorArguments[0].Value?.ToString() ?? "";
+
+                string MethodsTo = item.ConstructorArguments[1].Value?.ToString() ?? "";
+                string FullNameClass = type.ToString();
+                result.Add(new (TypeTo, MethodsTo, FullNameClass));
             }
         }
-        MethodsTo = MethodsTo?.TrimEnd(',') ?? "";
-        TypeTo ??= string.Empty;
-        FullNameClass = type.ToString();
+        return result.ToArray();
+    }
+    public DataFromInterceptClass(string typeTo, string methodsTo, string fullNameClass)
+    {
+        TypeTo = typeTo;
+        MethodsTo = methodsTo;
+        FullNameClass = fullNameClass;
     }
     public string FullNameClass { get; set; } = "";
     public string TypeTo { get; set; }

@@ -29,12 +29,12 @@ public class GeneratorWIAD : IIncrementalGenerator
         return dataInfo;
     }
 
-    private static DataFromInterceptClass FindAttributeDataClass(
+    private static DataFromInterceptClass[] FindAttributesDataClass(
     GeneratorAttributeSyntaxContext context,
     CancellationToken cancellationToken)
     {
         var type = (INamedTypeSymbol)context.TargetSymbol;
-        var dataInfo = new DataFromInterceptClass(type);
+        var dataInfo = DataFromInterceptClass.GetFromClass(type);
         return dataInfo;
     }
     public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -65,11 +65,11 @@ public class GeneratorWIAD : IIncrementalGenerator
         var instancesToIntercept = context.SyntaxProvider.ForAttributeWithMetadataName(
             "RSCG_WhatIAmDoing.InterceptInstanceClassAttribute",
             IsAppliedOnClass,
-            FindAttributeDataClass
+            FindAttributesDataClass
             )
              .Collect()
-            .SelectMany((data, _) => data.Distinct())
-            .Collect()
+            //.SelectMany((data, _) => data.Distinct())
+            //.Collect()
         ;
 
         var classesToIntercept = context.SyntaxProvider.CreateSyntaxProvider(
@@ -114,10 +114,10 @@ public class GeneratorWIAD : IIncrementalGenerator
         var classesToExpose = value.Right.ToArray();
         ExecuteGenStaticData(spc, dataFromInterceptStatic, compilation, ops,classesToExpose);
     }
-    private void ExecuteGenInstance(SourceProductionContext spc, (((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromExposeClass> Right) value)
+    private void ExecuteGenInstance(SourceProductionContext spc, (((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptClass[]> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromExposeClass> Right) value)
     {
         var compilation = value.Left.Left.Left;
-        var dataFromIntercept = value.Left.Right.ToArray();
+        var dataFromIntercept = value.Left.Right.SelectMany(it=>it).ToArray();
         var operations = value.Left.Left.Right.ToArray();
         var classesToExpose = value.Right.ToArray();
         
