@@ -39,7 +39,7 @@
 		<IncludeSource>true</IncludeSource>
 		<NoWarn>NU5125;NU5039</NoWarn>
 		<!--<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>-->
-		<Version>8.2024.10316.2035</Version>
+		<Version>8.2024.10316.2235</Version>
 		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
 		<RepositoryUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</RepositoryUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>

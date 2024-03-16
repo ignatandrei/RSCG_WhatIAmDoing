@@ -14,19 +14,25 @@ public class InterceptStaticAttribute: Attribute
 
 public class DataFromInterceptStatic: IEquatable<DataFromInterceptStatic>
 {
-    public DataFromInterceptStatic(INamedTypeSymbol type) 
+    public static DataFromInterceptStatic[] GetFromClass(INamedTypeSymbol type)
     {
+        var result = new List<DataFromInterceptStatic>();
         var attr = type.GetAttributes();
         foreach (var item in attr)
         {
             if (item.AttributeClass?.ToDisplayString() == "RSCG_WhatIAmDoing.InterceptStaticAttribute")
             {
-                TypesTo += item.ConstructorArguments[0].Value?.ToString() ?? "";
-                TypesTo += ",";
+                var TypesTo = item.ConstructorArguments[0].Value?.ToString() ?? "";
+                var FullNameClass = type.ToString();
+                result.Add(new (TypesTo, FullNameClass));
             }
         }
-        TypesTo = TypesTo?.TrimEnd(',')??"";
-        FullNameClass = type.ToString();
+        return result.ToArray();
+    }
+    public DataFromInterceptStatic(string typesTo, string fullNameClass) 
+    {
+        TypesTo = typesTo;
+        FullNameClass = fullNameClass;
     }
     public string FullNameClass { get; set; } = "";
 

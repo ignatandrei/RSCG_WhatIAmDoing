@@ -4,7 +4,13 @@ public class CachingData
 {
     public static IMemoryCache cacheMethodsHistory = new MemoryCache(new MemoryCacheOptions());
     public static ConcurrentBag<string> MethodKeys = new ConcurrentBag<string>();
+    public static IOrderedEnumerable<MethodCalled> MethodsError()
+    {
+        return Methods()
+                .Where(it => it.Exception != null)
+                .OrderBy(it => it.StartedAtTicks);
 
+    }
     public static IOrderedEnumerable<MethodCalled> Methods()
     {
         return MethodKeys.Select(x =>

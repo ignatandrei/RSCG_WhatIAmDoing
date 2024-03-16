@@ -68,6 +68,7 @@ static partial class SimpleIntercept
     internal static string cntPrefix = $$""""
 #pragma warning disable CS1591 
 #pragma warning disable CS9113
+#pragma warning disable CS8604
 namespace System.Runtime.CompilerServices{
 [AttributeUsage(AttributeTargets.Method,AllowMultiple =true)]
 file class InterceptsLocationAttribute(string filePath, int line, int character) : Attribute

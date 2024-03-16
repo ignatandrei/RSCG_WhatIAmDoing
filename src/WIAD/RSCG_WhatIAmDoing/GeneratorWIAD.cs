@@ -20,12 +20,12 @@ public class GeneratorWIAD : IIncrementalGenerator
         var dataInfo = new DataFromExposeClass(type);
         return dataInfo;
     }
-    private static DataFromInterceptStatic FindAttributeDataStatic(
+    private static DataFromInterceptStatic[] FindAttributeDataStatic(
     GeneratorAttributeSyntaxContext context,
     CancellationToken cancellationToken)
     {
         var type = (INamedTypeSymbol)context.TargetSymbol;
-        var dataInfo = new DataFromInterceptStatic(type);
+        var dataInfo = DataFromInterceptStatic.GetFromClass(type);
         return dataInfo;
     }
 
@@ -56,8 +56,8 @@ public class GeneratorWIAD : IIncrementalGenerator
     FindAttributeDataStatic
     )
      .Collect()
-    .SelectMany((data, _) => data.Distinct())
-    .Collect()
+    //.SelectMany((data, _) => data.Distinct())
+    //.Collect()
 ;
 
 
@@ -68,7 +68,7 @@ public class GeneratorWIAD : IIncrementalGenerator
             FindAttributesDataClass
             )
              .Collect()
-            //.SelectMany((data, _) => data.Distinct())
+            //.SelectMany((data, _) => data)
             //.Collect()
         ;
 
@@ -106,10 +106,10 @@ public class GeneratorWIAD : IIncrementalGenerator
     }
 
 
-    private void ExecuteGenStatic(SourceProductionContext spc, (((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromExposeClass> Right) value)
+    private void ExecuteGenStatic(SourceProductionContext spc, (((Compilation Left, System.Collections.Immutable.ImmutableArray<IOperation> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromInterceptStatic[]> Right) Left, System.Collections.Immutable.ImmutableArray<DataFromExposeClass> Right) value)
     {
         var compilation = value.Left.Left.Left;
-        var dataFromInterceptStatic = value.Left.Right.ToArray();
+        var dataFromInterceptStatic = value.Left.Right.ToArray().SelectMany(it=>it).ToArray();
         var ops= value.Left.Left.Right.ToArray();
         var classesToExpose = value.Right.ToArray();
         ExecuteGenStaticData(spc, dataFromInterceptStatic, compilation, ops,classesToExpose);
@@ -298,7 +298,7 @@ public class GeneratorWIAD : IIncrementalGenerator
                 var line = sourceText.Lines[startLinePosition.Line];
                 string code = line.ToString();
                 dataForEachIntercept.code = code;
-                dataForEachIntercept.Path = lineSpan.Path;
+                dataForEachIntercept.Path =Path.GetFullPath( lineSpan.Path);
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
                 int startMethod;
                 if (item.NameOfVariable.Length > 0)
@@ -522,7 +522,7 @@ public class GeneratorWIAD : IIncrementalGenerator
                 var line = sourceText.Lines[startLinePosition.Line];
                 string code = line.ToString();
                 dataForEachIntercept.code = code;
-                dataForEachIntercept.Path = lineSpan.Path;
+                dataForEachIntercept.Path = Path.GetFullPath(lineSpan.Path);
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
                 var startMethod = code.IndexOf(item.MethodName + "(", startLinePosition.Character);
                 //dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;

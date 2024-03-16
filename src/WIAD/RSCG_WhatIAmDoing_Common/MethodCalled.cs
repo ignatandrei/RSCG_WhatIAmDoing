@@ -22,7 +22,7 @@ public class MethodCalled(TypeAndMethodData typeAndMethodData,
         EndAtTicks = Environment.TickCount64;
 
     }
-    public Exception Exception { get; private set; }
+    public Exception? Exception { get; private set; }
     public void SetException(Exception ex)
     {
 
