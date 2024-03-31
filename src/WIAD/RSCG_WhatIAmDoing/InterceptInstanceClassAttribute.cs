@@ -7,6 +7,11 @@ public class InterceptInstanceClassAttribute
 {
     public readonly string method;
     public readonly string typeTo;
+    public InterceptInstanceClassAttribute(string typeRegex, string method = "*")
+    {
+        this.method = method;
+        this.typeTo = typeRegex;
+    }
     public InterceptInstanceClassAttribute(Type type,string method="*")
     {
         this.method = method;
@@ -24,8 +29,9 @@ public class DataFromInterceptClass : IEquatable<DataFromInterceptClass>
         {
             if (item.AttributeClass?.ToDisplayString() == "RSCG_WhatIAmDoing.InterceptInstanceClassAttribute")
             {
+                
                 string TypeTo = item.ConstructorArguments[0].Value?.ToString() ?? "";
-
+                
                 string MethodsTo = item.ConstructorArguments[1].Value?.ToString() ?? "";
                 string FullNameClass = type.ToString();
                 result.Add(new (TypeTo, MethodsTo, FullNameClass));

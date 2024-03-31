@@ -209,12 +209,12 @@ public class GeneratorWIAD : IIncrementalGenerator
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
         var s = typeOfClass.ToString();
-        if (!types.Contains(s))
+        if (!types.Any(t=>Regex.IsMatch(s,t)))
         {
             return new Tuple<TypeAndMethod, IOperation>(TypeAndMethod.InvalidEmpty, op);
         }
-        var methods = typeAndmethods
-        .Where(it => it.TypeTo == s)
+        var methods = typeAndmethods        
+        .Where(it => Regex.IsMatch(s,it.TypeTo) )
         .SelectMany(it => it.methods)
         .Distinct()
         .ToArray();
