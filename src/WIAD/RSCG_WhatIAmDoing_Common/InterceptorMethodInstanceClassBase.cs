@@ -2,6 +2,7 @@
 
 public class CachingData
 {
+    public static TextWriter? WriteToText=null;
     public static IMemoryCache cacheMethodsHistory = new MemoryCache(new MemoryCacheOptions());
     public static ConcurrentBag<string> MethodKeys = new ConcurrentBag<string>();
     public static IOrderedEnumerable<MethodCalled> MethodsError()
@@ -47,6 +48,10 @@ public class InterceptorMethodInstanceClassBase : IInterceptorMethodInstanceClas
         if (typeAndMethod == null) return id;
         var mc = new MethodCalled(typeAndMethod, valueValues, stringValues, exposeValues);
         CachingData.cacheMethodsHistory.Set(id, mc);
+        if(CachingData.WriteToText != null)
+        {
+            CachingData.WriteToText.WriteLine($"Start method {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
+        }
         CachingData.MethodKeys.Add(id);
         string color = typeAndMethod.IsVoid ? "yellow" : "red";
         //AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{mc.ArgumentsAsString()}[/] ");        
