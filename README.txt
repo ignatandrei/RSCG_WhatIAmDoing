@@ -18,8 +18,8 @@ Add the following into the csproj you want to be monitores
 ```xml
 	<ItemGroup>
 	  <!-- <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" /> -->
-	  <PackageReference Include="RSCG_WhatIAmDoing" Version="8.2024.10402.810" />
-	  <PackageReference Include="RSCG_WhatIAmDoing_Common" Version="8.2024.10402.810" />
+	  <PackageReference Include="RSCG_WhatIAmDoing" Version="8.2024.10402.2257" />
+	  <PackageReference Include="RSCG_WhatIAmDoing_Common" Version="8.2024.10402.2257" />
     </ItemGroup>
 
 <PropertyGroup>

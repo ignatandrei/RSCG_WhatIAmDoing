@@ -100,7 +100,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>
 		<NoWarn>NU5125;NU5039</NoWarn>
-		<Version>8.2024.10402.810</Version>
+		<Version>8.2024.10402.2257</Version>
 		<!--<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>-->
 
 		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
