@@ -6,7 +6,8 @@ public enum AccumulatedStateMethod
     None = 0,
     Started=1,
     Finished=2,
-    HasResult=4,
-    RaiseException=8,
+    HasFinishedWithResult = 4,
+    HasFinishedNoResult=8,
+    RaiseException=16,
 
 }

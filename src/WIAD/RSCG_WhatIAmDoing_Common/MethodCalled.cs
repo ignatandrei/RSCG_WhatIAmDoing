@@ -58,7 +58,12 @@ public class MethodCalled(TypeAndMethodData typeAndMethodData,
     public object? Result { get; private set; }
     internal void SetResult(object? result)
     {
-        State |= AccumulatedStateMethod.HasResult;
+        State |= AccumulatedStateMethod.HasFinishedWithResult;
         Result = result;
+    }
+    internal void SetFinishedOKNoResult()
+    {
+        State |= AccumulatedStateMethod.HasFinishedNoResult;
+        Result = null;
     }
 }

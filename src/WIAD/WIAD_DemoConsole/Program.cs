@@ -40,7 +40,7 @@ foreach (var item in data)
 {
     WriteLine($"Method {item.typeAndMethodData.MethodName} from class {item.typeAndMethodData.TypeOfClass} Time: {item.StartedAtDate} state {item.State} ");
     WriteLine($"  =>Arguments: {item.ArgumentsAsString()}");
-    if ((item.State & AccumulatedStateMethod.HasResult) == AccumulatedStateMethod.HasResult)
+    if ((item.State & AccumulatedStateMethod.HasFinishedWithResult) == AccumulatedStateMethod.HasFinishedWithResult)
     {
         WriteLine($"  =>Result: {item.Result}");
     }

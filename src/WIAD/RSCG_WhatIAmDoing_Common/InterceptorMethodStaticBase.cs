@@ -4,7 +4,7 @@ public class InterceptorMethodStaticBase : IInterceptorMethodStatic
 
     public InterceptorMethodStaticBase()
     {
-        Console.WriteLine("!!!! This should not be intercepted!");
+        //Console.WriteLine("!!!! This should not be intercepted!");
     }
     //static ConcurrentDictionary<string, TypeAndMethodStatic> _cache = new ();
     public static string InterceptStaticMethodBefore(
@@ -21,13 +21,23 @@ public class InterceptorMethodStaticBase : IInterceptorMethodStatic
         var mc = new MethodCalled(typeAndMethod, valueValues, stringValues, exposeValues);
         CachingData.cacheMethodsHistory.Set(id, mc);
         CachingData.MethodKeys.Add(id);
-
-        string color = typeAndMethod.IsVoid ? "green" : "yellow";
+        if (CachingData.OnMethodCalled != null)
+        {
+            CachingData.OnMethodCalled(id, mc.State, mc);
+        }
+        //string color = typeAndMethod.IsVoid ? "green" : "yellow";
         //AnsiConsole.MarkupLineInterpolated($"Calling [bold {color}]{typeAndMethod.MethodName}[/] from {typeAndMethod.TypeOfClass} with [underline blue]{mc.ArgumentsAsString()}[/] ");
         return id;
     }
     public static void InterceptMethodAfterWithoutResult(string id)
     {
+        var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
+        if (mc == null) return;
+        mc.SetFinishedOKNoResult();
+        if (CachingData.OnMethodCalled != null)
+        {
+            CachingData.OnMethodCalled(id, mc.State, mc);
+        }
         //AnsiConsole.MarkupLineInterpolated($"finish method [bold green]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()}");
     }
     public static void InterceptMethodAfterWithResult(string id, object? result)
@@ -35,6 +45,10 @@ public class InterceptorMethodStaticBase : IInterceptorMethodStatic
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.SetResult(result);
+        if (CachingData.OnMethodCalled != null)
+        {
+            CachingData.OnMethodCalled(id, mc.State, mc);
+        }
         //var typeAndMethod = mc.typeAndMethodData;
 
         //AnsiConsole.MarkupLineInterpolated($"end method [bold yellow]{typeAndMethod.MethodName}[/] with args {mc.ArgumentsAsString()} returning {result}");
@@ -44,16 +58,23 @@ public class InterceptorMethodStaticBase : IInterceptorMethodStatic
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.SetException(ex);
-        
-        var typeAndMethod = mc.typeAndMethodData;
-        
-        Console.WriteLine($"!!!Exception method {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
+        if (CachingData.OnMethodCalled != null)
+        {
+            CachingData.OnMethodCalled(id, mc.State, mc);
+        }
+        //var typeAndMethod = mc.typeAndMethodData;
+
+        //Console.WriteLine($"!!!Exception method {typeAndMethod.MethodName} from {typeAndMethod.TypeOfClass} with arguments {mc.ArgumentsAsString()}");
     }
     public static void InterceptMethodFinally(string id)
     {
         var mc = CachingData.cacheMethodsHistory.Get<MethodCalled>(id);
         if (mc == null) return;
         mc.SetFinished();
+        if (CachingData.OnMethodCalled != null)
+        {
+            CachingData.OnMethodCalled(id, mc.State, mc);
+        }
     }
 
 }
