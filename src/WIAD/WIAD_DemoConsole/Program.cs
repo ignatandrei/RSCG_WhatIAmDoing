@@ -33,6 +33,9 @@ Console.WriteLine(pers.FullNameWithSeparator("++++"));
 //Console.WriteLine(pers.WithEncoding(Encoding.ASCII));
 Console.WriteLine("Press enter to see the history");
 //Console.ReadLine();
+WithList withList = new();
+withList.FindData("adasd");
+
 List<MethodCalled> list = new List<MethodCalled>();
 var data= CachingData.Methods().ToArray();
 
@@ -46,6 +49,7 @@ foreach (var item in data)
     }
 
 }
+
 
 //foreach (var item in Program.cacheMethodsHistory)
 public partial class Program

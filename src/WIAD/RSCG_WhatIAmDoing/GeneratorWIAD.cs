@@ -328,9 +328,16 @@ public class GeneratorWIAD : IIncrementalGenerator
         foreach (var ser1 in dataForSerializeFiles)
         {
 
-            RSCG_WhatIAmDoing.AOPInstance v = new AOPInstance(ser1.Value);
+            AOPInstance v = new (ser1.Value);
             string fileContent = v.Render();
-            spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
+            try { 
+                spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
+            }
+            catch(Exception ex)
+            {
+                string s = ex.Message;
+                throw;
+            }
         }
 
 
@@ -550,7 +557,15 @@ public class GeneratorWIAD : IIncrementalGenerator
 
             RSCG_WhatIAmDoing.AOPStatic v = new AOPStatic(ser1.Value);
             string fileContent = v.Render();
-            spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
+            try
+            {
+                spc.AddSource(ser1.Value.nameFileToBeWritten + ".cs", fileContent);
+            }
+            catch(Exception ex)
+            {
+                string s = ex.Message;
+                throw;
+            }
         }
 
 

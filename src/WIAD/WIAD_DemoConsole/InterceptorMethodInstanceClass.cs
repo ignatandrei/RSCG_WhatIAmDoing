@@ -5,12 +5,12 @@ namespace WIAD_DemoConsole;
 //[InterceptInstanceClass(typeof(Person),"ame")]
 //[InterceptInstanceClass(typeof(Person), "parat")]
 //[InterceptInstanceClass(typeof(Person), "ncodi")]
-[InterceptInstanceClass(typeof(MethodCalled), ".*")]
+//[InterceptInstanceClass(typeof(MethodCalled), ".*")]
 //[InterceptInstanceClass(typeof(Person), ".*")]
 [InterceptInstanceClass("WIAD_DemoConsole.*", ".*")]
 //[InterceptInstanceClass("WIAD_DemoConsole.Person", ".*")]
-[InterceptInstanceClass(typeof(CachingData), ".*")]
-
+//[InterceptInstanceClass(typeof(CachingData), ".*")]
+//[InterceptInstanceClass(typeof(WithList), ".*")]
 public class InterceptorMethodInstanceClass: InterceptorMethodInstanceClassBase, IInterceptorMethodInstanceClass
 {
     

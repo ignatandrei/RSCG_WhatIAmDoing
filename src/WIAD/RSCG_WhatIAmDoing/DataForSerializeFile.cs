@@ -23,6 +23,9 @@ class DataForSerializeFile
 
         Interlocked.Increment(ref count);
         nameFileToBeWritten = $"{item.TypeOfClass}_{item.MethodName}_{count}";
+        nameFileToBeWritten = nameFileToBeWritten.Replace("<", "_");
+        nameFileToBeWritten = nameFileToBeWritten.Replace(">", "_");
+        nameFileToBeWritten = nameFileToBeWritten.Replace(".", "_");
     }
     public TypeAndMethod item;
     public string? itemToSerialize { get; set; }
