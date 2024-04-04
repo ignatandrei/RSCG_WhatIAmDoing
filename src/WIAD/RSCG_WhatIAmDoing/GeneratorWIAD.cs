@@ -298,7 +298,8 @@ public class GeneratorWIAD : IIncrementalGenerator
                 var line = sourceText.Lines[startLinePosition.Line];
                 string code = line.ToString();
                 dataForEachIntercept.code = code;
-                dataForEachIntercept.Path =Path.GetFullPath( lineSpan.Path);
+                //dataForEachIntercept.Path =Path.GetFullPath( lineSpan.Path);
+                dataForEachIntercept.Path = (lineSpan.Path);
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
                 int startMethod;
                 if (item.NameOfVariable.Length > 0)
@@ -529,7 +530,8 @@ public class GeneratorWIAD : IIncrementalGenerator
                 var line = sourceText.Lines[startLinePosition.Line];
                 string code = line.ToString();
                 dataForEachIntercept.code = code;
-                dataForEachIntercept.Path = Path.GetFullPath(lineSpan.Path);
+                //dataForEachIntercept.Path = Path.GetFullPath(lineSpan.Path);
+                dataForEachIntercept.Path = (lineSpan.Path);
                 dataForEachIntercept.Line = startLinePosition.Line + 1;
                 var startMethod = code.IndexOf(item.MethodName + "(", startLinePosition.Character);
                 //dataForEachIntercept.StartMethod = startLinePosition.Character + 1 + extraLength;
