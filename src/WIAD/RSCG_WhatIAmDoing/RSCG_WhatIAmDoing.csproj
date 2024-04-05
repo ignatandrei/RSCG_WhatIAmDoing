@@ -10,7 +10,7 @@
 		<!--<IncludeBuildOutput>false</IncludeBuildOutput>-->
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="RazorBlade" Version="0.4.3" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+		<PackageReference Include="RazorBlade" Version="0.5.0" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
 	</ItemGroup>
 	<PropertyGroup>
 
@@ -27,8 +27,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>-->
 
-		<PackageReference Include="System.CodeDom" PrivateAssets="all" GeneratePathProperty="true" Version="7.0.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
+		<PackageReference Include="System.CodeDom" PrivateAssets="all" GeneratePathProperty="true" Version="8.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
 		<None Remove="AOPInstance.cshtml" />
 		<None Remove="AOPStatic.cshtml" />
 		<None Remove="bin\Debug\netstandard2.0\\RSCG_Templating.dll" />
@@ -40,7 +40,7 @@
 		<!--<PackageReference Include="Scriban" Version="5.9.0" GeneratePathProperty="true" PrivateAssets="all" />-->
 		<!--<None Include="$(PkgScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
 
-		<PackageReference Include="System.Text.Json" Version="8.0.1" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="System.Text.Json" Version="8.0.3" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" PrivateAssets="all" />
 		<None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
@@ -75,7 +75,7 @@
 
 	
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 		<None Include="../../../README.md" Pack="true" PackagePath="\" />
 		<None Include="../../../readme.txt">
 			<Pack>True</Pack>
@@ -100,7 +100,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>
 		<NoWarn>NU5125;NU5039</NoWarn>
-		<Version>8.2024.10404.2057</Version>
+		<Version>8.2024.10405.851</Version>
 		<!--<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>-->
 
 		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->

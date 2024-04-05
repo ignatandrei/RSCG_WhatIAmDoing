@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 		<None Include="../../../README.md" Pack="true" PackagePath="\" />
 		<None Include="../../../readme.txt">
 			<Pack>True</Pack>
@@ -39,7 +39,7 @@
 		<IncludeSource>true</IncludeSource>
 		<NoWarn>NU5125;NU5039</NoWarn>
 		<!--<Version>$([System.DateTime]::Now.ToString(8.yyyy.1MMdd.1HHmm))</Version>-->
-		<Version>8.2024.10404.2057</Version>
+		<Version>8.2024.10405.851</Version>
 		<!--<Optimize Condition="'$(Configuration)'=='Release'">true</Optimize>-->
 		<RepositoryUrl>https://github.com/ignatandrei/RSCG_WhatIAmDoing</RepositoryUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
